@@ -18,7 +18,7 @@ class SnowflakeSchemaBuilder extends Builder
     public function createDatabase(string $name): bool
     {
         return $this->connection->statement(
-            $this->grammar->compileCreateDatabase($name, $this->connection)
+            $this->grammar->compileCreateDatabase($name)
         );
     }
 
@@ -219,11 +219,7 @@ class SnowflakeSchemaBuilder extends Builder
      */
     protected function createBlueprint($table, ?Closure $callback = null): SnowflakeBlueprint
     {
-        $prefix = $this->connection->getConfig('prefix_indexes')
-            ? $this->connection->getConfig('prefix')
-            : '';
-
-        return new SnowflakeBlueprint($table, $callback, $prefix);
+        return new SnowflakeBlueprint($this->connection, $table, $callback);
     }
 
     /**

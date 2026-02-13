@@ -35,12 +35,12 @@ class SnowflakeConnection extends Connection
 
     protected function getDefaultQueryGrammar(): QueryGrammar
     {
-        return new QueryGrammar;
+        return new QueryGrammar($this);
     }
 
     protected function getDefaultSchemaGrammar(): SnowflakeSchemaGrammar
     {
-        return new SnowflakeSchemaGrammar;
+        return new SnowflakeSchemaGrammar($this);
     }
 
     protected function getDefaultPostProcessor(): SnowflakeProcessor
