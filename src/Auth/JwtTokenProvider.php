@@ -92,6 +92,12 @@ final class JwtTokenProvider implements TokenProvider
     {
         if ($this->privateKey !== null) {
             $keyContent = $this->privateKey;
+
+            if (! str_starts_with(trim($keyContent), '-----BEGIN') || ! str_ends_with(trim($keyContent), '-----')) {
+                $keyContent = "-----BEGIN PRIVATE KEY-----\n"
+                    .wordwrap($keyContent, 64, "\n", true)
+                    ."\n-----END PRIVATE KEY-----";
+            }
         } else {
             if (! file_exists($this->privateKeyPath)) {
                 throw new AuthenticationException("Private key file not found: {$this->privateKeyPath}");

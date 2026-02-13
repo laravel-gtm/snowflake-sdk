@@ -51,6 +51,43 @@ describe('JwtTokenProvider', function () {
         expect($token2)->toBeString();
     });
 
+    it('accepts a raw base64 private key without PEM headers', function () {
+        $pem = file_get_contents(__DIR__ . '/../../Fixtures/test_rsa_key.pem');
+        $rawKey = '';
+        foreach (explode("\n", $pem) as $line) {
+            $line = trim($line);
+            if ($line !== '' && ! str_starts_with($line, '-----')) {
+                $rawKey .= $line;
+            }
+        }
+
+        $provider = new JwtTokenProvider(
+            account: 'test-account',
+            user: 'test_user',
+            privateKey: $rawKey,
+        );
+
+        $token = $provider->getToken();
+
+        expect($token)->toBeString();
+        expect(explode('.', $token))->toHaveCount(3);
+    });
+
+    it('accepts a full PEM string as private key', function () {
+        $pem = file_get_contents(__DIR__ . '/../../Fixtures/test_rsa_key.pem');
+
+        $provider = new JwtTokenProvider(
+            account: 'test-account',
+            user: 'test_user',
+            privateKey: $pem,
+        );
+
+        $token = $provider->getToken();
+
+        expect($token)->toBeString();
+        expect(explode('.', $token))->toHaveCount(3);
+    });
+
     it('throws exception for missing private key', function () {
         $provider = new JwtTokenProvider(
             account: 'test-account',
