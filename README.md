@@ -15,7 +15,7 @@ A Laravel database driver for Snowflake using the REST SQL API and [Saloon](http
 - ULID primary keys optimized for Snowflake clustering
 - Native support for VARIANT, OBJECT, and ARRAY types
 - Large result set streaming via partitions
-- JWT key-pair authentication
+- Bearer token authentication
 
 ## Requirements
 
@@ -41,34 +41,18 @@ php artisan vendor:publish --tag=snowflake-sdk-config
 
 This creates `config/snowflake-sdk.php` with all available options.
 
-### 2. Snowflake Account Setup
-
-Set up key-pair authentication in Snowflake:
-
-```bash
-openssl genrsa 2048 | openssl pkcs8 -topk8 -inform PEM -out snowflake_key.p8 -nocrypt
-openssl rsa -in snowflake_key.p8 -pubout -out snowflake_key.pub
-```
-
-Assign the public key to your Snowflake user:
-
-```sql
-ALTER USER your_user SET RSA_PUBLIC_KEY='MIIBIjANBgkqh...';
-```
-
-### 3. Environment Variables
+### 2. Environment Variables
 
 ```env
 SNOWFLAKE_ACCOUNT=your-account-identifier
+SNOWFLAKE_BEARER_TOKEN=your-bearer-token
 SNOWFLAKE_WAREHOUSE=COMPUTE_WH
 SNOWFLAKE_DATABASE=MY_DATABASE
 SNOWFLAKE_SCHEMA=PUBLIC
-SNOWFLAKE_USER=your_username
-SNOWFLAKE_PRIVATE_KEY_PATH=/path/to/snowflake_key.p8
 SNOWFLAKE_ROLE=SYSADMIN
 ```
 
-### 4. Database Configuration
+### 3. Database Configuration
 
 Add the Snowflake connection to `config/database.php`:
 
@@ -77,28 +61,11 @@ Add the Snowflake connection to `config/database.php`:
     'snowflake' => [
         'driver' => 'snowflake',
         'account' => env('SNOWFLAKE_ACCOUNT'),
+        'bearer_token' => env('SNOWFLAKE_BEARER_TOKEN'),
         'warehouse' => env('SNOWFLAKE_WAREHOUSE'),
         'database' => env('SNOWFLAKE_DATABASE'),
         'schema' => env('SNOWFLAKE_SCHEMA', 'PUBLIC'),
         'role' => env('SNOWFLAKE_ROLE'),
-        'auth' => [
-            'jwt' => [
-                'user' => env('SNOWFLAKE_USER'),
-                'private_key_path' => env('SNOWFLAKE_PRIVATE_KEY_PATH'),
-                'private_key_passphrase' => env('SNOWFLAKE_PRIVATE_KEY_PASSPHRASE'),
-            ],
-        ],
-    ],
-],
-```
-
-You can also provide the private key content directly instead of a file path:
-
-```php
-'auth' => [
-    'jwt' => [
-        'user' => env('SNOWFLAKE_USER'),
-        'private_key' => env('SNOWFLAKE_PRIVATE_KEY'),
     ],
 ],
 ```
@@ -118,7 +85,7 @@ $sdk = app(SnowflakeSdk::class);
 // Or create standalone
 $sdk = SnowflakeSdk::make([
     'account' => 'your-account',
-    'auth' => ['jwt' => ['user' => 'user', 'private_key_path' => '/path/to/key.pem']],
+    'bearer_token' => 'your-bearer-token',
 ]);
 
 $result = $sdk->execute('SELECT * FROM my_table LIMIT 10');
