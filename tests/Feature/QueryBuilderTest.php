@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use FoundryCo\Snowflake\Query\Grammars\SnowflakeGrammar;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\Processors\Processor;
+use LaravelGtm\SnowflakeSdk\Query\Grammars\SnowflakeGrammar;
 
 describe('QueryBuilder', function () {
     beforeEach(function () {

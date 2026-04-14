@@ -1,7 +1,7 @@
 {
-    "name": "foundry-co/laravel-snowflake",
-    "description": "Snowflake database driver for Laravel using REST API - no PDO extension required",
-    "keywords": ["laravel", "snowflake", "database", "eloquent", "driver"],
+    "name": "laravel-gtm/snowflake-sdk",
+    "description": "Snowflake database driver for Laravel using REST API and Saloon — no PDO extension required",
+    "keywords": ["laravel", "snowflake", "database", "eloquent", "driver", "saloon"],
     "license": "MIT",
     "type": "library",
     "authors": [
@@ -11,32 +11,45 @@
         }
     ],
     "require": {
-        "php": "^8.3",
-        "laravel/framework": "^12.0",
-        "firebase/php-jwt": "^7.0"
+        "php": "^8.4",
+        "illuminate/database": "^11.0 || ^12.0 || ^13.0",
+        "illuminate/support": "^11.0 || ^12.0 || ^13.0",
+        "firebase/php-jwt": "^7.0",
+        "saloonphp/saloon": "^4.0",
+        "saloonphp/laravel-plugin": "^4.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^10.0",
-        "pestphp/pest": "^4.0",
-        "pestphp/pest-plugin-laravel": "^4.0",
-        "mockery/mockery": "^1.6"
+        "larastan/larastan": "^3.0",
+        "laravel/pint": "^1.18",
+        "mockery/mockery": "^1.6",
+        "orchestra/testbench": "^9.0 || ^10.0",
+        "pestphp/pest": "^3.8 || ^4.0",
+        "pestphp/pest-plugin-laravel": "^3.0 || ^4.0",
+        "phpstan/phpstan": "^2.1"
     },
     "autoload": {
         "psr-4": {
-            "FoundryCo\\Snowflake\\": "src/"
+            "LaravelGtm\\SnowflakeSdk\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "FoundryCo\\Snowflake\\Tests\\": "tests/"
+            "LaravelGtm\\SnowflakeSdk\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "FoundryCo\\Snowflake\\SnowflakeServiceProvider"
+                "LaravelGtm\\SnowflakeSdk\\Laravel\\SnowflakeServiceProvider"
             ]
         }
+    },
+    "scripts": {
+        "test": "pest",
+        "test:coverage": "pest --coverage",
+        "lint": "vendor/bin/pint --test",
+        "format": "vendor/bin/pint",
+        "analyse": "phpstan analyse"
     },
     "config": {
         "sort-packages": true,

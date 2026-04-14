@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-use FoundryCo\Snowflake\Auth\JwtTokenProvider;
-use FoundryCo\Snowflake\Client\Exceptions\AuthenticationException;
+use LaravelGtm\SnowflakeSdk\Auth\JwtTokenProvider;
+use LaravelGtm\SnowflakeSdk\Exceptions\AuthenticationException;
 
 describe('JwtTokenProvider', function () {
     beforeEach(function () {
         $this->provider = new JwtTokenProvider(
             account: 'test-account',
             user: 'test_user',
-            privateKeyPath: __DIR__ . '/../../Fixtures/test_rsa_key.pem',
+            privateKeyPath: __DIR__.'/../../Fixtures/test_rsa_key.pem',
         );
     });
 
@@ -52,7 +52,7 @@ describe('JwtTokenProvider', function () {
     });
 
     it('accepts a raw base64 private key without PEM headers', function () {
-        $pem = file_get_contents(__DIR__ . '/../../Fixtures/test_rsa_key.pem');
+        $pem = file_get_contents(__DIR__.'/../../Fixtures/test_rsa_key.pem');
         $rawKey = '';
         foreach (explode("\n", $pem) as $line) {
             $line = trim($line);
@@ -74,7 +74,7 @@ describe('JwtTokenProvider', function () {
     });
 
     it('accepts a full PEM string as private key', function () {
-        $pem = file_get_contents(__DIR__ . '/../../Fixtures/test_rsa_key.pem');
+        $pem = file_get_contents(__DIR__.'/../../Fixtures/test_rsa_key.pem');
 
         $provider = new JwtTokenProvider(
             account: 'test-account',
@@ -106,7 +106,7 @@ describe('JwtTokenProvider', function () {
                 'auth' => [
                     'jwt' => [
                         'user' => 'my_user',
-                        'private_key_path' => __DIR__ . '/../../Fixtures/test_rsa_key.pem',
+                        'private_key_path' => __DIR__.'/../../Fixtures/test_rsa_key.pem',
                     ],
                 ],
             ];

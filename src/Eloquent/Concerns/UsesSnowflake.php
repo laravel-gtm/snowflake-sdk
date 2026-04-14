@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FoundryCo\Snowflake\Eloquent\Concerns;
+namespace LaravelGtm\SnowflakeSdk\Eloquent\Concerns;
 
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Support\Str;

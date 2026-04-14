@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FoundryCo\Snowflake\Support;
+namespace LaravelGtm\SnowflakeSdk\Support;
 
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
@@ -277,14 +277,14 @@ final class TypeConverter
         }
 
         if ($value instanceof \DateTimeInterface) {
-            return "'" . $value->format('Y-m-d H:i:s.u') . "'";
+            return "'".$value->format('Y-m-d H:i:s.u')."'";
         }
 
         if (is_array($value) || is_object($value)) {
-            return "PARSE_JSON('" . str_replace("'", "''", json_encode($value)) . "')";
+            return "PARSE_JSON('".str_replace("'", "''", json_encode($value))."')";
         }
 
         // String - escape single quotes by doubling them
-        return "'" . str_replace("'", "''", (string) $value) . "'";
+        return "'".str_replace("'", "''", (string) $value)."'";
     }
 }

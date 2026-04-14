@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use FoundryCo\Snowflake\Eloquent\Concerns\UsesSnowflake;
 use Illuminate\Database\Eloquent\Model;
+use LaravelGtm\SnowflakeSdk\Eloquent\Concerns\UsesSnowflake;
 
 // Test model using the trait
 class TestUser extends Model
@@ -11,7 +11,9 @@ class TestUser extends Model
     use UsesSnowflake;
 
     protected $connection = 'snowflake';
+
     protected $table = 'users';
+
     protected $fillable = ['name', 'email'];
 }
 
@@ -21,7 +23,9 @@ class TestPost extends Model
     use UsesSnowflake;
 
     protected $connection = 'snowflake';
+
     protected $table = 'posts';
+
     protected $fillable = ['title', 'content'];
 }
 

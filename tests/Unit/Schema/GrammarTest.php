@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use FoundryCo\Snowflake\Schema\Grammars\SnowflakeSchemaGrammar;
-use FoundryCo\Snowflake\Schema\SnowflakeBlueprint;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Fluent;
+use LaravelGtm\SnowflakeSdk\Schema\Grammars\SnowflakeSchemaGrammar;
+use LaravelGtm\SnowflakeSdk\Schema\SnowflakeBlueprint;
 
 beforeEach(function () {
     $grammar = null;

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Carbon\Carbon;
-use FoundryCo\Snowflake\Support\TypeConverter;
+use LaravelGtm\SnowflakeSdk\Support\TypeConverter;
 
 beforeEach(function () {
     $this->converter = new TypeConverter;

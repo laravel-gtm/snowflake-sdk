@@ -2,17 +2,20 @@
 
 declare(strict_types=1);
 
-namespace FoundryCo\Snowflake\Auth;
+namespace LaravelGtm\SnowflakeSdk\Auth;
 
 use Firebase\JWT\JWT;
-use FoundryCo\Snowflake\Client\Exceptions\AuthenticationException;
+use LaravelGtm\SnowflakeSdk\Exceptions\AuthenticationException;
 use OpenSSLAsymmetricKey;
 
 final class JwtTokenProvider implements TokenProvider
 {
     private ?string $cachedToken = null;
+
     private ?int $tokenExpiry = null;
+
     private const REFRESH_BUFFER_SECONDS = 300;
+
     private const TOKEN_LIFETIME_SECONDS = 3600;
 
     public function __construct(
@@ -27,6 +30,9 @@ final class JwtTokenProvider implements TokenProvider
         }
     }
 
+    /**
+     * @param  array<string, mixed>  $config
+     */
     public static function fromConfig(array $config): self
     {
         $account = $config['account'] ?? throw new AuthenticationException('Snowflake account is required');
@@ -47,6 +53,10 @@ final class JwtTokenProvider implements TokenProvider
     {
         if (! $this->isValid()) {
             $this->refresh();
+        }
+
+        if ($this->cachedToken === null) {
+            throw new AuthenticationException('Failed to generate JWT token');
         }
 
         return $this->cachedToken;
@@ -99,14 +109,15 @@ final class JwtTokenProvider implements TokenProvider
                     ."\n-----END PRIVATE KEY-----";
             }
         } else {
-            if (! file_exists($this->privateKeyPath)) {
-                throw new AuthenticationException("Private key file not found: {$this->privateKeyPath}");
+            $path = $this->privateKeyPath ?? '';
+            if (! file_exists($path)) {
+                throw new AuthenticationException("Private key file not found: {$path}");
             }
 
-            $keyContent = file_get_contents($this->privateKeyPath);
+            $keyContent = file_get_contents($path);
 
             if ($keyContent === false) {
-                throw new AuthenticationException("Failed to read private key file: {$this->privateKeyPath}");
+                throw new AuthenticationException("Failed to read private key file: {$path}");
             }
         }
 

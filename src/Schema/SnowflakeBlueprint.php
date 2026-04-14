@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FoundryCo\Snowflake\Schema;
+namespace LaravelGtm\SnowflakeSdk\Schema;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\ColumnDefinition;
@@ -184,8 +184,6 @@ class SnowflakeBlueprint extends Blueprint
      *
      * Clustering keys help optimize query performance by organizing
      * data in micro-partitions based on the specified columns.
-     *
-     * @param  array|string  $columns
      */
     public function clusterBy(array|string $columns): void
     {

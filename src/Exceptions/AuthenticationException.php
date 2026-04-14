@@ -2,11 +2,8 @@
 
 declare(strict_types=1);
 
-namespace FoundryCo\Snowflake\Client\Exceptions;
+namespace LaravelGtm\SnowflakeSdk\Exceptions;
 
-/**
- * Exception thrown when authentication with Snowflake fails.
- */
 class AuthenticationException extends SnowflakeException
 {
     public static function invalidCredentials(string $message = 'Invalid credentials'): self

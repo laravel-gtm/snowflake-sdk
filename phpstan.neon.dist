@@ -1,0 +1,13 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    paths:
+        - src
+        - tests
+    level: 8
+    treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        # Legacy code: untyped array parameters/returns inherited from Laravel base classes.
+        - identifier: missingType.iterableValue
+        - identifier: missingType.generics

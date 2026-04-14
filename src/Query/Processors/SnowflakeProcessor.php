@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FoundryCo\Snowflake\Query\Processors;
+namespace LaravelGtm\SnowflakeSdk\Query\Processors;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\Processors\Processor;
@@ -124,7 +124,7 @@ class SnowflakeProcessor extends Processor
             $scale = $result->NUMERIC_SCALE ?? $result->numeric_scale ?? null;
 
             if ($precision !== null) {
-                $type .= "({$precision}" . ($scale !== null ? ",{$scale}" : '') . ')';
+                $type .= "({$precision}".($scale !== null ? ",{$scale}" : '').')';
             }
         }
 

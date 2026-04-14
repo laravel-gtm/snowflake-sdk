@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace FoundryCo\Snowflake\Tests;
+namespace LaravelGtm\SnowflakeSdk\Tests;
 
-use FoundryCo\Snowflake\SnowflakeServiceProvider;
+use LaravelGtm\SnowflakeSdk\Laravel\SnowflakeServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
@@ -29,7 +29,7 @@ abstract class TestCase extends BaseTestCase
             'auth' => [
                 'jwt' => [
                     'user' => 'TEST_USER',
-                    'private_key_path' => __DIR__ . '/Fixtures/test_rsa_key.pem',
+                    'private_key_path' => __DIR__.'/Fixtures/test_rsa_key.pem',
                 ],
             ],
         ]);

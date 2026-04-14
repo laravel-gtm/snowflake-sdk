@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FoundryCo\Snowflake\Auth;
+namespace LaravelGtm\SnowflakeSdk\Auth;
 
 interface TokenProvider
 {

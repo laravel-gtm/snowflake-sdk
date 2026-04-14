@@ -2,83 +2,70 @@
 
 declare(strict_types=1);
 
-namespace FoundryCo\Snowflake\Client;
+namespace LaravelGtm\SnowflakeSdk\Responses;
 
 use Closure;
 
-/**
- * Represents the result of a Snowflake query execution.
- */
 final class SnowflakeResult
 {
     private ?ResultSet $resultSet = null;
 
+    /**
+     * @param  array<string, mixed>  $response
+     */
     public function __construct(
         private readonly array $response,
         private readonly Closure $partitionFetcher,
     ) {}
 
-    /**
-     * Get the statement handle.
-     */
     public function getStatementHandle(): string
     {
-        return $this->response['statementHandle'] ?? '';
+        return (string) ($this->response['statementHandle'] ?? '');
     }
 
-    /**
-     * Get the total number of rows affected or returned.
-     */
     public function getRowCount(): int
     {
-        return $this->response['resultSetMetaData']['numRows'] ?? 0;
+        return (int) ($this->response['resultSetMetaData']['numRows'] ?? 0);
     }
 
-    /**
-     * Get the number of rows in the first partition.
-     */
     public function getRowsReturnedInFirstPartition(): int
     {
-        return count($this->response['data'] ?? []);
+        /** @var array<int, mixed> $data */
+        $data = $this->response['data'] ?? [];
+
+        return count($data);
     }
 
-    /**
-     * Check if the query returned any rows.
-     */
     public function hasRows(): bool
     {
         return $this->getRowCount() > 0;
     }
 
     /**
-     * Get column metadata.
+     * @return array<int, array<string, mixed>>
      */
     public function getColumnMeta(): array
     {
+        /** @var array<int, array<string, mixed>> */
         return $this->response['resultSetMetaData']['rowType'] ?? [];
     }
 
     /**
-     * Get partition information.
+     * @return array<int, array<string, mixed>>
      */
     public function getPartitionInfo(): array
     {
+        /** @var array<int, array<string, mixed>> */
         return $this->response['resultSetMetaData']['partitionInfo'] ?? [];
     }
 
-    /**
-     * Get the number of partitions.
-     */
     public function getPartitionCount(): int
     {
         $partitionInfo = $this->getPartitionInfo();
 
-        return empty($partitionInfo) ? 1 : count($partitionInfo);
+        return $partitionInfo === [] ? 1 : count($partitionInfo);
     }
 
-    /**
-     * Get the result set for iterating over rows.
-     */
     public function getResultSet(): ResultSet
     {
         if ($this->resultSet === null) {
@@ -95,8 +82,6 @@ final class SnowflakeResult
     }
 
     /**
-     * Get all rows as an array.
-     *
      * @return array<int, object>
      */
     public function fetchAll(): array
@@ -104,16 +89,13 @@ final class SnowflakeResult
         return $this->getResultSet()->toArray();
     }
 
-    /**
-     * Get the first row or null if empty.
-     */
     public function fetchOne(): ?object
     {
         return $this->getResultSet()->first();
     }
 
     /**
-     * Get statistics about the query execution.
+     * @return array{rowCount: int, partitionCount: int, statementHandle: string}
      */
     public function getStats(): array
     {
@@ -124,16 +106,13 @@ final class SnowflakeResult
         ];
     }
 
-    /**
-     * Check if this is a SELECT query result (has data).
-     */
     public function isSelectResult(): bool
     {
         return isset($this->response['data']) || isset($this->response['resultSetMetaData']['rowType']);
     }
 
     /**
-     * Get the raw response data.
+     * @return array<string, mixed>
      */
     public function getRawResponse(): array
     {

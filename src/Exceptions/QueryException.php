@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace FoundryCo\Snowflake\Client\Exceptions;
+namespace LaravelGtm\SnowflakeSdk\Exceptions;
 
-/**
- * Exception thrown when a Snowflake query fails.
- */
 class QueryException extends SnowflakeException
 {
+    /**
+     * @param  array<int, mixed>  $bindings
+     */
     public function __construct(
         string $message,
         protected string $sql,
@@ -22,14 +22,15 @@ class QueryException extends SnowflakeException
     }
 
     /**
-     * Create from a Snowflake API error response.
+     * @param  array<string, mixed>  $response
+     * @param  array<int, mixed>  $bindings
      */
     public static function fromApiResponse(array $response, string $sql, array $bindings = []): self
     {
-        $message = $response['message'] ?? 'Query execution failed';
+        $message = (string) ($response['message'] ?? 'Query execution failed');
         $code = isset($response['code']) ? (int) $response['code'] : 0;
-        $sqlState = $response['sqlState'] ?? null;
-        $statementHandle = $response['statementHandle'] ?? null;
+        $sqlState = isset($response['sqlState']) ? (string) $response['sqlState'] : null;
+        $statementHandle = isset($response['statementHandle']) ? (string) $response['statementHandle'] : null;
 
         return new self(
             message: $message,
@@ -41,37 +42,31 @@ class QueryException extends SnowflakeException
         );
     }
 
-    /**
-     * Get the SQL query that caused the error.
-     */
     public function getSql(): string
     {
         return $this->sql;
     }
 
     /**
-     * Get the bindings used with the query.
+     * @return array<int, mixed>
      */
     public function getBindings(): array
     {
         return $this->bindings;
     }
 
-    /**
-     * Get a formatted error message including the SQL.
-     */
     public function getFormattedMessage(): string
     {
         $message = $this->getMessage();
 
-        if ($this->sqlState) {
+        if ($this->sqlState !== null) {
             $message .= " [SQLSTATE: {$this->sqlState}]";
         }
 
         $message .= "\n\nSQL: {$this->sql}";
 
-        if (! empty($this->bindings)) {
-            $message .= "\n\nBindings: " . json_encode($this->bindings);
+        if ($this->bindings !== []) {
+            $message .= "\n\nBindings: ".json_encode($this->bindings);
         }
 
         return $message;

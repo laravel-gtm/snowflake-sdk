@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FoundryCo\Snowflake\Casts;
+namespace LaravelGtm\SnowflakeSdk\Casts;
 
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * ];
  * ```
  */
+/** @implements CastsAttributes<CarbonInterface|null, CarbonInterface|string|null> */
 class SnowflakeTimestamp implements CastsAttributes
 {
     /**

@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-use FoundryCo\Snowflake\Schema\Grammars\SnowflakeSchemaGrammar;
-use FoundryCo\Snowflake\Schema\SnowflakeBlueprint;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Fluent;
+use LaravelGtm\SnowflakeSdk\Schema\Grammars\SnowflakeSchemaGrammar;
+use LaravelGtm\SnowflakeSdk\Schema\SnowflakeBlueprint;
 
 describe('Schema Blueprint', function () {
     beforeEach(function () {
@@ -151,7 +152,7 @@ describe('Schema Builder pretend mode', function () {
         $blueprint->string('email');
         $blueprint->timestamps();
 
-        $sql = $grammar->compileCreate($blueprint, new \Illuminate\Support\Fluent);
+        $sql = $grammar->compileCreate($blueprint, new Fluent);
 
         expect($sql)->toContain('CREATE TABLE');
         expect($sql)->toContain('"users"');
@@ -161,7 +162,7 @@ describe('Schema Builder pretend mode', function () {
         $grammar = $this->grammar;
         $blueprint = new SnowflakeBlueprint($this->connection, 'users');
 
-        $sql = $grammar->compileDropIfExists($blueprint, new \Illuminate\Support\Fluent);
+        $sql = $grammar->compileDropIfExists($blueprint, new Fluent);
 
         expect($sql)->toContain('DROP TABLE IF EXISTS');
     });
@@ -171,7 +172,7 @@ describe('Schema Builder pretend mode', function () {
         $blueprint = new SnowflakeBlueprint($this->connection, 'users');
         $blueprint->string('phone')->nullable();
 
-        $sql = $grammar->compileAdd($blueprint, new \Illuminate\Support\Fluent);
+        $sql = $grammar->compileAdd($blueprint, new Fluent);
 
         expect($sql)->toContain('ALTER TABLE');
         expect($sql)->toContain('ADD COLUMN');
@@ -180,7 +181,7 @@ describe('Schema Builder pretend mode', function () {
     it('generates rename table sql', function () {
         $grammar = $this->grammar;
         $blueprint = new SnowflakeBlueprint($this->connection, 'users');
-        $command = new \Illuminate\Support\Fluent(['to' => 'members']);
+        $command = new Fluent(['to' => 'members']);
 
         $sql = $grammar->compileRename($blueprint, $command);
 

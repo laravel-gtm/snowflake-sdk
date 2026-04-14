@@ -2,25 +2,28 @@
 
 declare(strict_types=1);
 
-namespace FoundryCo\Snowflake\Connection;
+namespace LaravelGtm\SnowflakeSdk\Connection;
 
 use Closure;
 use Exception;
-use FoundryCo\Snowflake\Client\Exceptions\QueryException as SnowflakeQueryException;
-use FoundryCo\Snowflake\Client\SnowflakeApiClient;
-use FoundryCo\Snowflake\Query\Grammars\SnowflakeGrammar as QueryGrammar;
-use FoundryCo\Snowflake\Query\Processors\SnowflakeProcessor;
-use FoundryCo\Snowflake\Schema\Grammars\SnowflakeSchemaGrammar;
-use FoundryCo\Snowflake\Schema\SnowflakeSchemaBuilder;
 use Generator;
 use Illuminate\Database\Connection;
 use Illuminate\Database\QueryException;
+use LaravelGtm\SnowflakeSdk\Exceptions\QueryException as SnowflakeQueryException;
+use LaravelGtm\SnowflakeSdk\Query\Grammars\SnowflakeGrammar as QueryGrammar;
+use LaravelGtm\SnowflakeSdk\Query\Processors\SnowflakeProcessor;
+use LaravelGtm\SnowflakeSdk\Schema\Grammars\SnowflakeSchemaGrammar;
+use LaravelGtm\SnowflakeSdk\Schema\SnowflakeSchemaBuilder;
+use LaravelGtm\SnowflakeSdk\SnowflakeSdk;
 
 class SnowflakeConnection extends Connection
 {
-    protected SnowflakeApiClient $client;
+    protected SnowflakeSdk $client;
+
     protected ?string $currentWarehouse = null;
+
     protected ?string $currentRole = null;
+
     protected ?string $currentSchema = null;
 
     public function __construct($pdo, string $database = '', string $tablePrefix = '', array $config = [])
@@ -267,30 +270,27 @@ class SnowflakeConnection extends Connection
                str_contains($message, 'unique constraint');
     }
 
-    public function getClient(): SnowflakeApiClient
+    public function getClient(): SnowflakeSdk
     {
         return $this->client;
     }
 
-    public function getPdo(): SnowflakeApiClient
+    public function getPdo(): SnowflakeSdk
     {
         if ($this->pdo instanceof Closure) {
             $this->pdo = call_user_func($this->pdo);
         }
 
+        /** @var SnowflakeSdk */
         return $this->pdo;
     }
 
-    public function getReadPdo(): SnowflakeApiClient
+    public function getReadPdo(): SnowflakeSdk
     {
         return $this->getPdo();
     }
 
-    public function disconnect(): void
-    {
-    }
+    public function disconnect(): void {}
 
-    public function reconnect(): void
-    {
-    }
+    public function reconnect(): void {}
 }

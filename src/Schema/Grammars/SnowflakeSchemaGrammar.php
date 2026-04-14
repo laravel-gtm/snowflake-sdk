@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FoundryCo\Snowflake\Schema\Grammars;
+namespace LaravelGtm\SnowflakeSdk\Schema\Grammars;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Grammars\Grammar;
@@ -35,14 +35,14 @@ class SnowflakeSchemaGrammar extends Grammar
     {
         $columns = $this->prefixArray('ADD COLUMN', $this->getColumns($blueprint));
 
-        return 'ALTER TABLE ' . $this->wrapTable($blueprint) . ' ' . implode(', ', $columns);
+        return 'ALTER TABLE '.$this->wrapTable($blueprint).' '.implode(', ', $columns);
     }
 
     public function compileDropColumn(Blueprint $blueprint, Fluent $command): string
     {
         $columns = $this->prefixArray('DROP COLUMN', $this->wrapArray($command->columns));
 
-        return 'ALTER TABLE ' . $this->wrapTable($blueprint) . ' ' . implode(', ', $columns);
+        return 'ALTER TABLE '.$this->wrapTable($blueprint).' '.implode(', ', $columns);
     }
 
     public function compileRenameColumn(Blueprint $blueprint, Fluent $command): string
@@ -147,12 +147,12 @@ class SnowflakeSchemaGrammar extends Grammar
 
     public function compileDrop(Blueprint $blueprint, Fluent $command): string
     {
-        return 'DROP TABLE ' . $this->wrapTable($blueprint);
+        return 'DROP TABLE '.$this->wrapTable($blueprint);
     }
 
     public function compileDropIfExists(Blueprint $blueprint, Fluent $command): string
     {
-        return 'DROP TABLE IF EXISTS ' . $this->wrapTable($blueprint);
+        return 'DROP TABLE IF EXISTS '.$this->wrapTable($blueprint);
     }
 
     public function compileRename(Blueprint $blueprint, Fluent $command): string
@@ -194,42 +194,42 @@ class SnowflakeSchemaGrammar extends Grammar
 
     public function compileTables($schema): string
     {
-        return "SELECT TABLE_NAME AS \"name\", TABLE_SCHEMA AS \"schema\", BYTES AS \"size\", ROW_COUNT AS \"rows\", COMMENT AS \"comment\" " .
+        return 'SELECT TABLE_NAME AS "name", TABLE_SCHEMA AS "schema", BYTES AS "size", ROW_COUNT AS "rows", COMMENT AS "comment" '.
             "FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA = '{$schema}'";
     }
 
     public function compileViews($schema): string
     {
-        return "SELECT TABLE_NAME AS \"name\", TABLE_SCHEMA AS \"schema\", VIEW_DEFINITION AS \"definition\" " .
+        return 'SELECT TABLE_NAME AS "name", TABLE_SCHEMA AS "schema", VIEW_DEFINITION AS "definition" '.
             "FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = '{$schema}'";
     }
 
     public function compileColumns($schema, $table): string
     {
-        return "SELECT COLUMN_NAME AS \"name\", DATA_TYPE AS \"type_name\", IS_NULLABLE AS \"nullable\", COLUMN_DEFAULT AS \"default\", COMMENT AS \"comment\", " .
-            "NUMERIC_PRECISION AS \"precision\", NUMERIC_SCALE AS \"scale\", CHARACTER_MAXIMUM_LENGTH AS \"length\" " .
-            "FROM INFORMATION_SCHEMA.COLUMNS " .
-            "WHERE TABLE_SCHEMA = '{$schema}' AND TABLE_NAME = '{$table}' " .
+        return 'SELECT COLUMN_NAME AS "name", DATA_TYPE AS "type_name", IS_NULLABLE AS "nullable", COLUMN_DEFAULT AS "default", COMMENT AS "comment", '.
+            'NUMERIC_PRECISION AS "precision", NUMERIC_SCALE AS "scale", CHARACTER_MAXIMUM_LENGTH AS "length" '.
+            'FROM INFORMATION_SCHEMA.COLUMNS '.
+            "WHERE TABLE_SCHEMA = '{$schema}' AND TABLE_NAME = '{$table}' ".
             'ORDER BY ORDINAL_POSITION';
     }
 
     public function compileForeignKeys($schema, $table): string
     {
-        return "SELECT " .
-            'tc.CONSTRAINT_NAME AS "name", ' .
-            'kcu.COLUMN_NAME AS "columns", ' .
-            'ccu.TABLE_SCHEMA AS "foreign_schema", ' .
-            'ccu.TABLE_NAME AS "foreign_table", ' .
-            'ccu.COLUMN_NAME AS "foreign_columns", ' .
-            'rc.UPDATE_RULE AS "on_update", rc.DELETE_RULE AS "on_delete" ' .
-            "FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc " .
-            "JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu " .
-            'ON tc.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME ' .
-            "JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc " .
-            'ON tc.CONSTRAINT_NAME = rc.CONSTRAINT_NAME ' .
-            "JOIN INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE ccu " .
-            'ON rc.UNIQUE_CONSTRAINT_NAME = ccu.CONSTRAINT_NAME ' .
-            "WHERE tc.TABLE_SCHEMA = '{$schema}' AND tc.TABLE_NAME = '{$table}' " .
+        return 'SELECT '.
+            'tc.CONSTRAINT_NAME AS "name", '.
+            'kcu.COLUMN_NAME AS "columns", '.
+            'ccu.TABLE_SCHEMA AS "foreign_schema", '.
+            'ccu.TABLE_NAME AS "foreign_table", '.
+            'ccu.COLUMN_NAME AS "foreign_columns", '.
+            'rc.UPDATE_RULE AS "on_update", rc.DELETE_RULE AS "on_delete" '.
+            'FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc '.
+            'JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu '.
+            'ON tc.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME '.
+            'JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc '.
+            'ON tc.CONSTRAINT_NAME = rc.CONSTRAINT_NAME '.
+            'JOIN INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE ccu '.
+            'ON rc.UNIQUE_CONSTRAINT_NAME = ccu.CONSTRAINT_NAME '.
+            "WHERE tc.TABLE_SCHEMA = '{$schema}' AND tc.TABLE_NAME = '{$table}' ".
             "AND tc.CONSTRAINT_TYPE = 'FOREIGN KEY'";
     }
 
@@ -461,7 +461,7 @@ class SnowflakeSchemaGrammar extends Grammar
     protected function modifyDefault(Blueprint $blueprint, Fluent $column): ?string
     {
         if (! is_null($column->default)) {
-            return ' DEFAULT ' . $this->getDefaultValue($column->default);
+            return ' DEFAULT '.$this->getDefaultValue($column->default);
         }
 
         return null;
@@ -479,7 +479,7 @@ class SnowflakeSchemaGrammar extends Grammar
     protected function modifyComment(Blueprint $blueprint, Fluent $column): ?string
     {
         if (! is_null($column->comment)) {
-            return " COMMENT '" . str_replace("'", "''", $column->comment) . "'";
+            return " COMMENT '".str_replace("'", "''", $column->comment)."'";
         }
 
         return null;
@@ -491,7 +491,7 @@ class SnowflakeSchemaGrammar extends Grammar
             $table = $table->getTable();
         }
 
-        return '"' . str_replace('"', '""', $table) . '"';
+        return '"'.str_replace('"', '""', $table).'"';
     }
 
     protected function wrapValue($value): string
@@ -500,7 +500,7 @@ class SnowflakeSchemaGrammar extends Grammar
             return $value;
         }
 
-        return '"' . str_replace('"', '""', (string) $value) . '"';
+        return '"'.str_replace('"', '""', (string) $value).'"';
     }
 
     public function supportsSchemaTransactions(): bool

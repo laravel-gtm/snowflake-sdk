@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FoundryCo\Snowflake\Casts;
+namespace LaravelGtm\SnowflakeSdk\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * ];
  * ```
  */
+/** @implements CastsAttributes<mixed, mixed> */
 class VariantCast implements CastsAttributes
 {
     /**

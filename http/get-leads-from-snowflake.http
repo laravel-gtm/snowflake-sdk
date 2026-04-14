@@ -1,0 +1,7 @@
+POST https://laravel-rpb57418.snowflakecomputing.com/api/v2/statements
+Authorization: Bearer {{SNOWFLAKE_BEARER_TOKEN}}
+Content-Type: application/json
+Accept: application/json
+{
+    "statement": "select account_id as hubspot_account_id, owner_id as hubspot_owner_id, domain as domain, cloud_upgrade_readiness_score as biz_upgrade_readiness_score, cloud_upgrade_readiness_tier as biz_upgrade_readiness_tier from production.reverse_etl.company_traits where account_id is not null and owner_id is not null and cloud_upgrade_readiness_score is not null limit 100"
+}

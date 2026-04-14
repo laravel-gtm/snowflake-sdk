@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FoundryCo\Snowflake\Schema;
+namespace LaravelGtm\SnowflakeSdk\Schema;
 
 use Closure;
 use Illuminate\Database\Schema\Builder;
@@ -15,8 +15,10 @@ class SnowflakeSchemaBuilder extends Builder
     /**
      * Create a new database.
      */
-    public function createDatabase(string $name): bool
+    public function createDatabase(mixed $name): bool
     {
+        $name = (string) $name;
+
         return $this->connection->statement(
             $this->grammar->compileCreateDatabase($name)
         );
@@ -25,8 +27,10 @@ class SnowflakeSchemaBuilder extends Builder
     /**
      * Drop a database if it exists.
      */
-    public function dropDatabaseIfExists(string $name): bool
+    public function dropDatabaseIfExists(mixed $name): bool
     {
+        $name = (string) $name;
+
         return $this->connection->statement(
             $this->grammar->compileDropDatabaseIfExists($name)
         );
@@ -57,7 +61,7 @@ class SnowflakeSchemaBuilder extends Builder
      *
      * @return array<int, array{name: string, schema: string|null, size: int|null, rows: int|null, comment: string|null}>
      */
-    public function getTables(): array
+    public function getTables(mixed $schema = null): array
     {
         $database = $this->connection->getDatabaseName();
         $schema = $this->connection->getConfig('schema');
@@ -74,7 +78,7 @@ class SnowflakeSchemaBuilder extends Builder
      *
      * @return array<int, array{name: string, schema: string|null, definition: string|null}>
      */
-    public function getViews(): array
+    public function getViews(mixed $schema = null): array
     {
         $database = $this->connection->getDatabaseName();
         $schema = $this->connection->getConfig('schema');
@@ -91,9 +95,9 @@ class SnowflakeSchemaBuilder extends Builder
      *
      * @return array<int, array{name: string, type_name: string, type: string, nullable: bool, default: string|null, auto_increment: bool, comment: string|null, generation: array|null}>
      */
-    public function getColumns(string $table): array
+    public function getColumns(mixed $table): array
     {
-        $table = $this->connection->getTablePrefix() . $table;
+        $table = $this->connection->getTablePrefix().(string) $table;
         $database = $this->connection->getDatabaseName();
         $schema = $this->connection->getConfig('schema') ?? 'PUBLIC';
 
@@ -111,7 +115,7 @@ class SnowflakeSchemaBuilder extends Builder
      *
      * @return array<int, array{name: string, columns: array, type: string, unique: bool, primary: bool}>
      */
-    public function getIndexes(string $table): array
+    public function getIndexes(mixed $table): array
     {
         // Snowflake doesn't have traditional indexes
         // Could query clustering keys here if needed
@@ -123,9 +127,9 @@ class SnowflakeSchemaBuilder extends Builder
      *
      * @return array<int, array{name: string, columns: array, foreign_schema: string, foreign_table: string, foreign_columns: array, on_update: string, on_delete: string}>
      */
-    public function getForeignKeys(string $table): array
+    public function getForeignKeys(mixed $table): array
     {
-        $table = $this->connection->getTablePrefix() . $table;
+        $table = $this->connection->getTablePrefix().(string) $table;
         $database = $this->connection->getDatabaseName();
         $schema = $this->connection->getConfig('schema') ?? 'PUBLIC';
 
@@ -141,7 +145,7 @@ class SnowflakeSchemaBuilder extends Builder
      */
     public function hasTable($table): bool
     {
-        $table = $this->connection->getTablePrefix() . $table;
+        $table = $this->connection->getTablePrefix().$table;
         $schema = $this->connection->getConfig('schema') ?? 'PUBLIC';
 
         $result = $this->connection->selectFromWriteConnection(
@@ -225,8 +229,12 @@ class SnowflakeSchemaBuilder extends Builder
     /**
      * Get the column type for a given column name.
      */
-    public function getColumnType(string $table, string $column, bool $fullDefinition = false): string
+    public function getColumnType(mixed $table, mixed $column, mixed $fullDefinition = false): string
     {
+        $table = (string) $table;
+        $column = (string) $column;
+        $fullDefinition = (bool) $fullDefinition;
+
         $columns = $this->getColumns($table);
 
         foreach ($columns as $col) {

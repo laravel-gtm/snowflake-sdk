@@ -1,0 +1,703 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method LaravelGtm\\SnowflakeSdk\\Connection\\SnowflakeConnection\:\:getSchemaGrammar\(\) should return LaravelGtm\\SnowflakeSdk\\Schema\\Grammars\\SnowflakeSchemaGrammar but returns Illuminate\\Database\\Schema\\Grammars\\Grammar\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Connection/SnowflakeConnection.php
+
+		-
+			message: '#^Property Illuminate\\Database\\Connection\:\:\$schemaGrammar \(Illuminate\\Database\\Schema\\Grammars\\Grammar\) on left side of \?\? is not nullable\.$#'
+			identifier: nullCoalesce.property
+			count: 1
+			path: src/Connection/SnowflakeConnection.php
+
+		-
+			message: '#^Return type \(LaravelGtm\\SnowflakeSdk\\SnowflakeSdk\) of method LaravelGtm\\SnowflakeSdk\\Connection\\SnowflakeConnection\:\:getPdo\(\) should be compatible with return type \(PDO\) of method Illuminate\\Database\\Connection\:\:getPdo\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/Connection/SnowflakeConnection.php
+
+		-
+			message: '#^Return type \(LaravelGtm\\SnowflakeSdk\\SnowflakeSdk\) of method LaravelGtm\\SnowflakeSdk\\Connection\\SnowflakeConnection\:\:getReadPdo\(\) should be compatible with return type \(PDO\) of method Illuminate\\Database\\Connection\:\:getReadPdo\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/Connection/SnowflakeConnection.php
+
+		-
+			message: '#^Return type \(LaravelGtm\\SnowflakeSdk\\SnowflakeSdk\) of method LaravelGtm\\SnowflakeSdk\\Connection\\SnowflakeDbConnector\:\:connect\(\) should be compatible with return type \(PDO\) of method Illuminate\\Database\\Connectors\\ConnectorInterface\:\:connect\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/Connection/SnowflakeDbConnector.php
+
+		-
+			message: '#^Cannot access offset ''db'' on Illuminate\\Contracts\\Foundation\\Application\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Laravel/SnowflakeServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$pdo of class LaravelGtm\\SnowflakeSdk\\Connection\\SnowflakeConnection constructor expects \(Closure\(\)\: PDO\)\|PDO, LaravelGtm\\SnowflakeSdk\\SnowflakeSdk given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Laravel/SnowflakeServiceProvider.php
+
+		-
+			message: '#^Cannot cast Illuminate\\Contracts\\Database\\Query\\Expression\|string to string\.$#'
+			identifier: cast.string
+			count: 2
+			path: src/Query/Grammars/SnowflakeGrammar.php
+
+		-
+			message: '#^Method Illuminate\\Database\\Grammar\:\:wrapAliasedValue\(\) invoked with 2 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Query/Grammars/SnowflakeGrammar.php
+
+		-
+			message: '#^Method LaravelGtm\\SnowflakeSdk\\Query\\Grammars\\SnowflakeGrammar\:\:wrap\(\) has parameter \$prefixAlias with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Query/Grammars/SnowflakeGrammar.php
+
+		-
+			message: '#^Method LaravelGtm\\SnowflakeSdk\\Query\\Grammars\\SnowflakeGrammar\:\:wrap\(\) should return string but returns float\|int\|string\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Query/Grammars/SnowflakeGrammar.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(int\|string\)\: mixed\)\|null, array\{\$this\(LaravelGtm\\SnowflakeSdk\\Query\\Grammars\\SnowflakeGrammar\), ''wrap''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Query/Grammars/SnowflakeGrammar.php
+
+		-
+			message: '#^Parameter \#1 \$value of method Illuminate\\Database\\Grammar\:\:wrapAliasedValue\(\) expects string, Illuminate\\Contracts\\Database\\Query\\Expression\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Query/Grammars/SnowflakeGrammar.php
+
+		-
+			message: '#^Parameter \#1 \$value of method LaravelGtm\\SnowflakeSdk\\Query\\Grammars\\SnowflakeGrammar\:\:wrap\(\) expects Illuminate\\Contracts\\Database\\Query\\Expression\|string, int\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Query/Grammars/SnowflakeGrammar.php
+
+		-
+			message: '#^Method LaravelGtm\\SnowflakeSdk\\Query\\Processors\\SnowflakeProcessor\:\:processColumnListing\(\) has parameter \$results with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Query/Processors/SnowflakeProcessor.php
+
+		-
+			message: '#^Return type \(array\<int, array\{name\: string, schema\: string\|null, definition\: string\|null\}\>\) of method LaravelGtm\\SnowflakeSdk\\Query\\Processors\\SnowflakeProcessor\:\:processViews\(\) should be compatible with return type \(list\<array\{name\: string, schema\: string, schema_qualified_name\: string, definition\: string\}\>\) of method Illuminate\\Database\\Query\\Processors\\Processor\:\:processViews\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/Query/Processors/SnowflakeProcessor.php
+
+		-
+			message: '#^Return type \(array\<int, array\{name\: string, schema\: string\|null, size\: int\|null, rows\: int\|null, comment\: string\|null\}\>\) of method LaravelGtm\\SnowflakeSdk\\Query\\Processors\\SnowflakeProcessor\:\:processTables\(\) should be compatible with return type \(list\<array\{name\: string, schema\: string\|null, schema_qualified_name\: string, size\: int\|null, comment\: string\|null, collation\: string\|null, engine\: string\|null\}\>\) of method Illuminate\\Database\\Query\\Processors\\Processor\:\:processTables\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/Query/Processors/SnowflakeProcessor.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Schema\\ColumnDefinition\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$allowed\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$collation\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$columns\.$#'
+			identifier: property.notFound
+			count: 5
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$comment\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$days\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$default\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$from\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$increment\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$index\.$#'
+			identifier: property.notFound
+			count: 4
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$length\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$nullable\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$on\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$onDelete\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$onUpdate\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$places\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$references\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$start\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$to\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$total\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Parameter \#1 \.\.\.\$arg1 of function max expects non\-empty\-array, array\<int\<0, max\>\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Part \$schema \(array\<string\>\|string\|null\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 2
+			path: src/Schema/Grammars/SnowflakeSchemaGrammar.php
+
+		-
+			message: '#^Method LaravelGtm\\SnowflakeSdk\\Schema\\SnowflakeBlueprint\:\:foreignUlid\(\) should return Illuminate\\Database\\Schema\\ForeignIdColumnDefinition but returns Illuminate\\Database\\Schema\\ColumnDefinition\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Schema/SnowflakeBlueprint.php
+
+		-
+			message: '#^Return type \(void\) of method LaravelGtm\\SnowflakeSdk\\Schema\\SnowflakeBlueprint\:\:timestamps\(\) should be compatible with return type \(Illuminate\\Support\\Collection\<int, Illuminate\\Database\\Schema\\ColumnDefinition\>\) of method Illuminate\\Database\\Schema\\Blueprint\:\:timestamps\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/Schema/SnowflakeBlueprint.php
+
+		-
+			message: '#^Return type \(void\) of method LaravelGtm\\SnowflakeSdk\\Schema\\SnowflakeBlueprint\:\:timestampsTz\(\) should be compatible with return type \(Illuminate\\Support\\Collection\<int, Illuminate\\Database\\Schema\\ColumnDefinition\>\) of method Illuminate\\Database\\Schema\\Blueprint\:\:timestampsTz\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/Schema/SnowflakeBlueprint.php
+
+		-
+			message: '#^Method Illuminate\\Database\\Schema\\Grammars\\Grammar\:\:compileColumns\(\) invoked with 3 parameters, 2 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Schema/SnowflakeSchemaBuilder.php
+
+		-
+			message: '#^Method Illuminate\\Database\\Schema\\Grammars\\Grammar\:\:compileForeignKeys\(\) invoked with 3 parameters, 2 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Schema/SnowflakeSchemaBuilder.php
+
+		-
+			message: '#^Method Illuminate\\Database\\Schema\\Grammars\\Grammar\:\:compileTableExists\(\) invoked with 0 parameters, 2 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Schema/SnowflakeSchemaBuilder.php
+
+		-
+			message: '#^Method Illuminate\\Database\\Schema\\Grammars\\Grammar\:\:compileTables\(\) invoked with 2 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Schema/SnowflakeSchemaBuilder.php
+
+		-
+			message: '#^Method Illuminate\\Database\\Schema\\Grammars\\Grammar\:\:compileViews\(\) invoked with 2 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Schema/SnowflakeSchemaBuilder.php
+
+		-
+			message: '#^Method LaravelGtm\\SnowflakeSdk\\Schema\\SnowflakeSchemaBuilder\:\:getTables\(\) should return array\<int, array\{name\: string, schema\: string\|null, size\: int\|null, rows\: int\|null, comment\: string\|null\}\> but returns list\<array\{name\: string, schema\: string\|null, schema_qualified_name\: string, size\: int\|null, comment\: string\|null, collation\: string\|null, engine\: string\|null\}\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Schema/SnowflakeSchemaBuilder.php
+
+		-
+			message: '#^Parameter \#1 \$query of method Illuminate\\Database\\Connection\:\:selectFromWriteConnection\(\) expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Schema/SnowflakeSchemaBuilder.php
+
+		-
+			message: '#^Parameter \#1 \$results of method Illuminate\\Database\\Query\\Processors\\Processor\:\:processColumns\(\) expects list\<array\<string, mixed\>\>, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Schema/SnowflakeSchemaBuilder.php
+
+		-
+			message: '#^Parameter \#1 \$results of method Illuminate\\Database\\Query\\Processors\\Processor\:\:processForeignKeys\(\) expects list\<array\<string, mixed\>\>, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Schema/SnowflakeSchemaBuilder.php
+
+		-
+			message: '#^Parameter \#1 \$results of method Illuminate\\Database\\Query\\Processors\\Processor\:\:processTables\(\) expects list\<array\<string, mixed\>\>, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Schema/SnowflakeSchemaBuilder.php
+
+		-
+			message: '#^Parameter \#1 \$results of method Illuminate\\Database\\Query\\Processors\\Processor\:\:processViews\(\) expects list\<array\<string, mixed\>\>, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Schema/SnowflakeSchemaBuilder.php
+
+		-
+			message: '#^Return type \(array\<int, array\{name\: string, schema\: string\|null, definition\: string\|null\}\>\) of method LaravelGtm\\SnowflakeSdk\\Schema\\SnowflakeSchemaBuilder\:\:getViews\(\) should be compatible with return type \(list\<array\{name\: string, schema\: string\|null, schema_qualified_name\: string, definition\: string\}\>\) of method Illuminate\\Database\\Schema\\Builder\:\:getViews\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/Schema/SnowflakeSchemaBuilder.php
+
+		-
+			message: '#^Return type \(array\<int, array\{name\: string, schema\: string\|null, size\: int\|null, rows\: int\|null, comment\: string\|null\}\>\) of method LaravelGtm\\SnowflakeSdk\\Schema\\SnowflakeSchemaBuilder\:\:getTables\(\) should be compatible with return type \(list\<array\{name\: string, schema\: string\|null, schema_qualified_name\: string, size\: int\|null, comment\: string\|null, collation\: string\|null, engine\: string\|null\}\>\) of method Illuminate\\Database\\Schema\\Builder\:\:getTables\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/Schema/SnowflakeSchemaBuilder.php
+
+		-
+			message: '#^Parameter \#1 \$num1 of function bccomp expects numeric\-string, string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Support/TypeConverter.php
+
+		-
+			message: '#^Parameter \#3 \$subject of function str_replace expects array\<string\>\|string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Support/TypeConverter.php
+
+		-
+			message: '#^Parameter \#1 \$string of function strlen expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Feature/EloquentTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Schema\\ColumnDefinition\:\:\$increment\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/MigrationTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Schema\\ColumnDefinition\:\:\$length\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/Feature/MigrationTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Schema\\ColumnDefinition\:\:\$precision\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/MigrationTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Schema\\ColumnDefinition\:\:\$scale\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/MigrationTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Schema\\ColumnDefinition\:\:\$start\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/MigrationTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Schema\\ColumnDefinition\:\:\$type\.$#'
+			identifier: property.notFound
+			count: 11
+			path: tests/Feature/MigrationTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Support\\Fluent\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/Feature/MigrationTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$connection\.$#'
+			identifier: property.notFound
+			count: 21
+			path: tests/Feature/MigrationTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$grammar\.$#'
+			identifier: property.notFound
+			count: 6
+			path: tests/Feature/MigrationTest.php
+
+		-
+			message: '#^Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\HigherOrderMessage\:\:andReturn\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: tests/Feature/MigrationTest.php
+
+		-
+			message: '#^Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\HigherOrderMessage\:\:andReturnUsing\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: tests/Feature/MigrationTest.php
+
+		-
+			message: '#^Cannot access property \$columns on Illuminate\\Support\\Fluent\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/MigrationTest.php
+
+		-
+			message: '#^Cannot access property \$days on Illuminate\\Support\\Fluent\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/MigrationTest.php
+
+		-
+			message: '#^Parameter \#1 \$connection of class LaravelGtm\\SnowflakeSdk\\Schema\\Grammars\\SnowflakeSchemaGrammar constructor expects Illuminate\\Database\\Connection, Mockery\\MockInterface given\.$#'
+			identifier: argument.type
+			count: 4
+			path: tests/Feature/MigrationTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function expect$#'
+			identifier: argument.templateType
+			count: 19
+			path: tests/Feature/MigrationTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$builder\.$#'
+			identifier: property.notFound
+			count: 21
+			path: tests/Feature/QueryBuilderTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$connection\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/Feature/QueryBuilderTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$grammar\.$#'
+			identifier: property.notFound
+			count: 13
+			path: tests/Feature/QueryBuilderTest.php
+
+		-
+			message: '#^Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\HigherOrderMessage\:\:andReturn\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/Feature/QueryBuilderTest.php
+
+		-
+			message: '#^Parameter \#1 \$connection of class Illuminate\\Database\\Query\\Builder constructor expects Illuminate\\Database\\ConnectionInterface, Mockery\\MockInterface given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Feature/QueryBuilderTest.php
+
+		-
+			message: '#^Parameter \#1 \$connection of class LaravelGtm\\SnowflakeSdk\\Query\\Grammars\\SnowflakeGrammar constructor expects Illuminate\\Database\\Connection, Mockery\\MockInterface given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Feature/QueryBuilderTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\Mixins\\Expectation\<null\>\:\:\$not\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Pest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$provider\.$#'
+			identifier: property.notFound
+			count: 11
+			path: tests/Unit/Auth/JwtTokenProviderTest.php
+
+		-
+			message: '#^Parameter \#2 \$string of function explode expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Auth/JwtTokenProviderTest.php
+
+		-
+			message: '#^Parameter \$privateKey of class LaravelGtm\\SnowflakeSdk\\Auth\\JwtTokenProvider constructor expects string\|null, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Auth/JwtTokenProviderTest.php
+
+		-
+			message: '#^Access to an undefined property Mockery\\MockInterface\:\:\$aggregate\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Mockery\\MockInterface\:\:\$bindings\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Mockery\\MockInterface\:\:\$columns\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Mockery\\MockInterface\:\:\$distinct\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Mockery\\MockInterface\:\:\$from\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Mockery\\MockInterface\:\:\$groups\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Mockery\\MockInterface\:\:\$havings\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Mockery\\MockInterface\:\:\$indexHint\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Mockery\\MockInterface\:\:\$joins\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Mockery\\MockInterface\:\:\$limit\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Mockery\\MockInterface\:\:\$lock\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Mockery\\MockInterface\:\:\$offset\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Mockery\\MockInterface\:\:\$orders\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Mockery\\MockInterface\:\:\$unionLimit\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Mockery\\MockInterface\:\:\$unionOffset\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Mockery\\MockInterface\:\:\$unionOrders\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Mockery\\MockInterface\:\:\$unions\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Mockery\\MockInterface\:\:\$wheres\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$connection\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$grammar\.$#'
+			identifier: property.notFound
+			count: 11
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\HigherOrderMessage\:\:andReturn\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Parameter \#1 \$connection of class LaravelGtm\\SnowflakeSdk\\Query\\Grammars\\SnowflakeGrammar constructor expects Illuminate\\Database\\Connection, Mockery\\MockInterface given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Query/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$connection\.$#'
+			identifier: property.notFound
+			count: 4
+			path: tests/Unit/Schema/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$grammar\.$#'
+			identifier: property.notFound
+			count: 31
+			path: tests/Unit/Schema/GrammarTest.php
+
+		-
+			message: '#^Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\HigherOrderMessage\:\:andReturn\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/Unit/Schema/GrammarTest.php
+
+		-
+			message: '#^Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\HigherOrderMessage\:\:andReturnUsing\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/Unit/Schema/GrammarTest.php
+
+		-
+			message: '#^Parameter \#1 \$connection of class LaravelGtm\\SnowflakeSdk\\Schema\\Grammars\\SnowflakeSchemaGrammar constructor expects Illuminate\\Database\\Connection, Mockery\\MockInterface given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Schema/GrammarTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$connector\.$#'
+			identifier: property.notFound
+			count: 6
+			path: tests/Unit/SnowflakeConnectorTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$tokenProvider\.$#'
+			identifier: property.notFound
+			count: 2
+			path: tests/Unit/SnowflakeConnectorTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$connector\.$#'
+			identifier: property.notFound
+			count: 5
+			path: tests/Unit/SnowflakeSdkTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$sdk\.$#'
+			identifier: property.notFound
+			count: 5
+			path: tests/Unit/SnowflakeSdkTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$tokenProvider\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Unit/SnowflakeSdkTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$converter\.$#'
+			identifier: property.notFound
+			count: 39
+			path: tests/Unit/Support/TypeConverterTest.php

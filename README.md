@@ -1,34 +1,47 @@
-# Laravel Snowflake
+# Snowflake SDK for Laravel
 
-A Laravel database driver for Snowflake using the REST SQL API. No PHP extensions or ODBC drivers required.
+[![Tests](https://github.com/laravel-gtm/snowflake-sdk/actions/workflows/tests.yml/badge.svg)](https://github.com/laravel-gtm/snowflake-sdk/actions/workflows/tests.yml)
+[![PHP Version](https://img.shields.io/packagist/php-v/laravel-gtm/snowflake-sdk.svg?style=flat-square)](https://packagist.org/packages/laravel-gtm/snowflake-sdk)
+[![License](https://img.shields.io/packagist/l/laravel-gtm/snowflake-sdk.svg?style=flat-square)](https://packagist.org/packages/laravel-gtm/snowflake-sdk)
+
+A Laravel database driver for Snowflake using the REST SQL API and [Saloon](https://docs.saloon.dev). No PHP extensions or ODBC drivers required.
 
 ## Features
 
-- Pure PHP implementation using Snowflake's REST API
+- Pure PHP implementation using Snowflake's REST API via Saloon v4
 - Full Eloquent support with models and relationships
 - Laravel Query Builder with Snowflake-specific SQL
 - Migrations with Snowflake-specific column types
 - ULID primary keys optimized for Snowflake clustering
 - Native support for VARIANT, OBJECT, and ARRAY types
 - Large result set streaming via partitions
+- JWT key-pair authentication
 
 ## Requirements
 
-- PHP 8.2+
-- Laravel 12.0+
+- PHP 8.4+
+- Laravel 11.0+, 12.0+, or 13.0+
 - Snowflake account with REST API access
 
 ## Installation
 
 ```bash
-composer require foundry-co/laravel-snowflake
+composer require laravel-gtm/snowflake-sdk
 ```
 
 The package will auto-register its service provider.
 
 ## Configuration
 
-### 1. Snowflake Account Setup
+### 1. Publish the config file
+
+```bash
+php artisan vendor:publish --tag=snowflake-sdk-config
+```
+
+This creates `config/snowflake-sdk.php` with all available options.
+
+### 2. Snowflake Account Setup
 
 Set up key-pair authentication in Snowflake:
 
@@ -43,7 +56,7 @@ Assign the public key to your Snowflake user:
 ALTER USER your_user SET RSA_PUBLIC_KEY='MIIBIjANBgkqh...';
 ```
 
-### 2. Environment Variables
+### 3. Environment Variables
 
 ```env
 SNOWFLAKE_ACCOUNT=your-account-identifier
@@ -55,7 +68,7 @@ SNOWFLAKE_PRIVATE_KEY_PATH=/path/to/snowflake_key.p8
 SNOWFLAKE_ROLE=SYSADMIN
 ```
 
-### 3. Database Configuration
+### 4. Database Configuration
 
 Add the Snowflake connection to `config/database.php`:
 
@@ -92,13 +105,32 @@ You can also provide the private key content directly instead of a file path:
 
 ## Usage
 
+### Standalone SDK Usage
+
+You can use the SDK directly without the database driver:
+
+```php
+use LaravelGtm\SnowflakeSdk\SnowflakeSdk;
+
+// Via the container
+$sdk = app(SnowflakeSdk::class);
+
+// Or create standalone
+$sdk = SnowflakeSdk::make([
+    'account' => 'your-account',
+    'auth' => ['jwt' => ['user' => 'user', 'private_key_path' => '/path/to/key.pem']],
+]);
+
+$result = $sdk->execute('SELECT * FROM my_table LIMIT 10');
+```
+
 ### Eloquent Models
 
 Add the `UsesSnowflake` trait to any model that connects to Snowflake:
 
 ```php
 use Illuminate\Database\Eloquent\Model;
-use FoundryCo\Snowflake\Eloquent\Concerns\UsesSnowflake;
+use LaravelGtm\SnowflakeSdk\Eloquent\Concerns\UsesSnowflake;
 
 class User extends Model
 {
@@ -132,7 +164,7 @@ DB::connection('snowflake')
 
 ```php
 use Illuminate\Database\Migrations\Migration;
-use FoundryCo\Snowflake\Schema\SnowflakeBlueprint;
+use LaravelGtm\SnowflakeSdk\Schema\SnowflakeBlueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -177,8 +209,8 @@ return new class extends Migration
 ### Custom Casts
 
 ```php
-use FoundryCo\Snowflake\Casts\VariantCast;
-use FoundryCo\Snowflake\Casts\SnowflakeTimestamp;
+use LaravelGtm\SnowflakeSdk\Casts\VariantCast;
+use LaravelGtm\SnowflakeSdk\Casts\SnowflakeTimestamp;
 
 class Event extends Model
 {
@@ -220,10 +252,13 @@ foreach (DB::connection('snowflake')->table('events')->cursor() as $event) {
 }
 ```
 
-## Testing
+## Development
 
 ```bash
-composer test
+composer test        # Run tests (Pest)
+composer analyse     # Run static analysis (PHPStan level 8)
+composer lint        # Check code style (Pint)
+composer format      # Fix code style (Pint)
 ```
 
 ## Limitations

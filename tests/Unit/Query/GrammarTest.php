@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use FoundryCo\Snowflake\Query\Grammars\SnowflakeGrammar;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder;
+use LaravelGtm\SnowflakeSdk\Query\Grammars\SnowflakeGrammar;
 
 beforeEach(function () {
     $connection = Mockery::mock(Connection::class);

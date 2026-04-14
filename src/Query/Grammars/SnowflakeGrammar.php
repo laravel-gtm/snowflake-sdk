@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FoundryCo\Snowflake\Query\Grammars;
+namespace LaravelGtm\SnowflakeSdk\Query\Grammars;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\Grammars\Grammar;
@@ -48,7 +48,7 @@ class SnowflakeGrammar extends Grammar
             foreach ($columns as $column) {
                 $row[] = $this->parameter($record[$column] ?? null);
             }
-            $sourceRows[] = '(' . implode(', ', $row) . ')';
+            $sourceRows[] = '('.implode(', ', $row).')';
         }
 
         $wrappedColumns = array_map([$this, 'wrap'], $columns);
@@ -71,16 +71,16 @@ class SnowflakeGrammar extends Grammar
         $sourceColumns = array_map(fn ($col) => "source.{$this->wrap($col)}", $columns);
         $sourceColumnList = implode(', ', $sourceColumns);
 
-        return "MERGE INTO {$table} AS target " .
-            "USING (SELECT * FROM VALUES " . implode(', ', $sourceRows) . " AS temp({$columnList})) AS source " .
-            "ON {$onClause} " .
-            "WHEN MATCHED THEN UPDATE SET {$updateClause} " .
+        return "MERGE INTO {$table} AS target ".
+            'USING (SELECT * FROM VALUES '.implode(', ', $sourceRows)." AS temp({$columnList})) AS source ".
+            "ON {$onClause} ".
+            "WHEN MATCHED THEN UPDATE SET {$updateClause} ".
             "WHEN NOT MATCHED THEN INSERT ({$columnList}) VALUES ({$sourceColumnList})";
     }
 
     public function compileTruncate(Builder $query): array
     {
-        return ['TRUNCATE TABLE ' . $this->wrapTable($query->from) => []];
+        return ['TRUNCATE TABLE '.$this->wrapTable($query->from) => []];
     }
 
     protected function compileLock(Builder $query, $value): string
@@ -107,42 +107,42 @@ class SnowflakeGrammar extends Grammar
             return $value;
         }
 
-        return '"' . str_replace('"', '""', (string) $value) . '"';
+        return '"'.str_replace('"', '""', (string) $value).'"';
     }
 
     protected function whereDate(Builder $query, $where): string
     {
         $value = $this->parameter($where['value']);
 
-        return $this->wrap($where['column']) . '::DATE ' . $where['operator'] . ' ' . $value;
+        return $this->wrap($where['column']).'::DATE '.$where['operator'].' '.$value;
     }
 
     protected function whereTime(Builder $query, $where): string
     {
         $value = $this->parameter($where['value']);
 
-        return $this->wrap($where['column']) . '::TIME ' . $where['operator'] . ' ' . $value;
+        return $this->wrap($where['column']).'::TIME '.$where['operator'].' '.$value;
     }
 
     protected function whereYear(Builder $query, $where): string
     {
         $value = $this->parameter($where['value']);
 
-        return 'YEAR(' . $this->wrap($where['column']) . ') ' . $where['operator'] . ' ' . $value;
+        return 'YEAR('.$this->wrap($where['column']).') '.$where['operator'].' '.$value;
     }
 
     protected function whereMonth(Builder $query, $where): string
     {
         $value = $this->parameter($where['value']);
 
-        return 'MONTH(' . $this->wrap($where['column']) . ') ' . $where['operator'] . ' ' . $value;
+        return 'MONTH('.$this->wrap($where['column']).') '.$where['operator'].' '.$value;
     }
 
     protected function whereDay(Builder $query, $where): string
     {
         $value = $this->parameter($where['value']);
 
-        return 'DAY(' . $this->wrap($where['column']) . ') ' . $where['operator'] . ' ' . $value;
+        return 'DAY('.$this->wrap($where['column']).') '.$where['operator'].' '.$value;
     }
 
     protected function whereJsonContains(Builder $query, $where): string
@@ -182,12 +182,12 @@ class SnowflakeGrammar extends Grammar
 
     protected function compileLimit(Builder $query, $limit): string
     {
-        return 'LIMIT ' . (int) $limit;
+        return 'LIMIT '.(int) $limit;
     }
 
     protected function compileOffset(Builder $query, $offset): string
     {
-        return 'OFFSET ' . (int) $offset;
+        return 'OFFSET '.(int) $offset;
     }
 
     public function compileRandom($seed): string
@@ -202,12 +202,12 @@ class SnowflakeGrammar extends Grammar
 
     public function compileExists(Builder $query): string
     {
-        return 'SELECT EXISTS(' . $this->compileSelect($query) . ') AS "exists"';
+        return 'SELECT EXISTS('.$this->compileSelect($query).') AS "exists"';
     }
 
     public function compileTableExists(): string
     {
-        return "SELECT COUNT(*) AS \"exists\" FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?";
+        return 'SELECT COUNT(*) AS "exists" FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?';
     }
 
     public function compileColumnListing(): string
