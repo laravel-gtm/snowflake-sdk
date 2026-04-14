@@ -7,7 +7,6 @@ namespace LaravelGtm\SnowflakeSdk\Laravel;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Database\Connection;
 use Illuminate\Support\ServiceProvider;
-use LaravelGtm\SnowflakeSdk\Auth\JwtTokenProvider;
 use LaravelGtm\SnowflakeSdk\Connection\SnowflakeConnection;
 use LaravelGtm\SnowflakeSdk\Connection\SnowflakeDbConnector;
 use LaravelGtm\SnowflakeSdk\SnowflakeConnector;
@@ -26,10 +25,10 @@ class SnowflakeServiceProvider extends ServiceProvider
             $config = (array) $configRepository->get('snowflake-sdk', []);
 
             $account = (string) ($config['account'] ?? '');
-            $tokenProvider = JwtTokenProvider::fromConfig($config);
+            $token = (string) ($config['bearer_token'] ?? '');
             $timeout = (int) ($config['timeout'] ?? 0);
 
-            return new SnowflakeConnector($account, $tokenProvider, $timeout);
+            return new SnowflakeConnector($account, $token, $timeout);
         });
 
         $this->app->singleton(SnowflakeSdk::class, function (): SnowflakeSdk {

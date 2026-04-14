@@ -2,21 +2,14 @@
 
 declare(strict_types=1);
 
-use LaravelGtm\SnowflakeSdk\Auth\JwtAuthenticator;
-use LaravelGtm\SnowflakeSdk\Auth\JwtTokenProvider;
 use LaravelGtm\SnowflakeSdk\SnowflakeConnector;
+use Saloon\Http\Auth\TokenAuthenticator;
 
 describe('SnowflakeConnector', function () {
     beforeEach(function () {
-        $this->tokenProvider = new JwtTokenProvider(
-            account: 'test-account',
-            user: 'test_user',
-            privateKeyPath: __DIR__.'/../Fixtures/test_rsa_key.pem',
-        );
-
         $this->connector = new SnowflakeConnector(
             account: 'xy12345.us-east-1',
-            tokenProvider: $this->tokenProvider,
+            token: 'test-bearer-token',
         );
     });
 
@@ -34,17 +27,17 @@ describe('SnowflakeConnector', function () {
         expect($headers)->toHaveKey('User-Agent');
     });
 
-    it('uses JWT authenticator', function () {
+    it('uses token authenticator', function () {
         $auth = (new ReflectionMethod($this->connector, 'defaultAuth'))
             ->invoke($this->connector);
 
-        expect($auth)->toBeInstanceOf(JwtAuthenticator::class);
+        expect($auth)->toBeInstanceOf(TokenAuthenticator::class);
     });
 
     it('accepts a custom timeout', function () {
         $connector = new SnowflakeConnector(
             account: 'test',
-            tokenProvider: $this->tokenProvider,
+            token: 'test-bearer-token',
             timeout: 30,
         );
 

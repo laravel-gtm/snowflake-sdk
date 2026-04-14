@@ -26,12 +26,7 @@ abstract class TestCase extends BaseTestCase
             'database' => 'TEST_DB',
             'schema' => 'PUBLIC',
             'role' => 'SYSADMIN',
-            'auth' => [
-                'jwt' => [
-                    'user' => 'TEST_USER',
-                    'private_key_path' => __DIR__.'/Fixtures/test_rsa_key.pem',
-                ],
-            ],
+            'bearer_token' => 'test-token',
         ]);
     }
 }

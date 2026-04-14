@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace LaravelGtm\SnowflakeSdk;
 
-use LaravelGtm\SnowflakeSdk\Auth\JwtAuthenticator;
-use LaravelGtm\SnowflakeSdk\Auth\JwtTokenProvider;
+use Saloon\Http\Auth\TokenAuthenticator;
 use Saloon\Http\Connector;
 use Saloon\Traits\Plugins\HasTimeout;
 
@@ -19,7 +18,7 @@ class SnowflakeConnector extends Connector
 
     public function __construct(
         private readonly string $account,
-        private readonly JwtTokenProvider $tokenProvider,
+        private readonly string $token,
         int $timeout = 0,
     ) {
         $this->requestTimeout = $timeout;
@@ -30,9 +29,9 @@ class SnowflakeConnector extends Connector
         return 'https://'.rtrim($this->account, '/').'.snowflakecomputing.com';
     }
 
-    protected function defaultAuth(): JwtAuthenticator
+    protected function defaultAuth(): TokenAuthenticator
     {
-        return new JwtAuthenticator($this->tokenProvider);
+        return new TokenAuthenticator($this->token);
     }
 
     /**

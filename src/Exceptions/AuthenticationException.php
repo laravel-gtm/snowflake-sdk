@@ -10,14 +10,4 @@ class AuthenticationException extends SnowflakeException
     {
         return new self($message, 401);
     }
-
-    public static function tokenExpired(): self
-    {
-        return new self('Authentication token has expired', 401);
-    }
-
-    public static function configurationError(string $detail): self
-    {
-        return new self("Authentication configuration error: {$detail}", 500);
-    }
 }

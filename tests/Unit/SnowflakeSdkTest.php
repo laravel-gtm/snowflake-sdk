@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use LaravelGtm\SnowflakeSdk\Auth\JwtTokenProvider;
 use LaravelGtm\SnowflakeSdk\Exceptions\AuthenticationException;
 use LaravelGtm\SnowflakeSdk\Exceptions\QueryException;
 use LaravelGtm\SnowflakeSdk\Exceptions\SnowflakeException;
@@ -16,15 +15,9 @@ use Saloon\Http\Faking\MockResponse;
 
 describe('SnowflakeSdk', function () {
     beforeEach(function () {
-        $this->tokenProvider = new JwtTokenProvider(
-            account: 'test-account',
-            user: 'test_user',
-            privateKeyPath: __DIR__.'/../Fixtures/test_rsa_key.pem',
-        );
-
         $this->connector = new SnowflakeConnector(
             account: 'test-account',
-            tokenProvider: $this->tokenProvider,
+            token: 'test-bearer-token',
         );
 
         $this->sdk = new SnowflakeSdk(
@@ -114,12 +107,7 @@ describe('SnowflakeSdk', function () {
     it('creates via static make factory', function () {
         $sdk = SnowflakeSdk::make([
             'account' => 'test-account',
-            'auth' => [
-                'jwt' => [
-                    'user' => 'test_user',
-                    'private_key_path' => __DIR__.'/../Fixtures/test_rsa_key.pem',
-                ],
-            ],
+            'bearer_token' => 'test-bearer-token',
         ]);
 
         expect($sdk)->toBeInstanceOf(SnowflakeSdk::class);
@@ -129,5 +117,10 @@ describe('SnowflakeSdk', function () {
     it('throws when account is missing from make()', function () {
         expect(fn () => SnowflakeSdk::make([]))
             ->toThrow(SnowflakeException::class, 'account is required');
+    });
+
+    it('throws when bearer token is missing from make()', function () {
+        expect(fn () => SnowflakeSdk::make(['account' => 'test']))
+            ->toThrow(SnowflakeException::class, 'bearer token is required');
     });
 });

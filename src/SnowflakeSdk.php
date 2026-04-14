@@ -6,7 +6,6 @@ namespace LaravelGtm\SnowflakeSdk;
 
 use Closure;
 use Illuminate\Support\Str;
-use LaravelGtm\SnowflakeSdk\Auth\JwtTokenProvider;
 use LaravelGtm\SnowflakeSdk\Exceptions\AuthenticationException;
 use LaravelGtm\SnowflakeSdk\Exceptions\QueryException;
 use LaravelGtm\SnowflakeSdk\Exceptions\SnowflakeException;
@@ -41,10 +40,10 @@ class SnowflakeSdk
     public static function make(array $config): self
     {
         $account = $config['account'] ?? throw new SnowflakeException('Snowflake account is required');
-        $tokenProvider = JwtTokenProvider::fromConfig($config);
+        $token = $config['bearer_token'] ?? throw new SnowflakeException('Snowflake bearer token is required');
         $timeout = (int) ($config['timeout'] ?? 0);
 
-        $connector = new SnowflakeConnector((string) $account, $tokenProvider, $timeout);
+        $connector = new SnowflakeConnector((string) $account, (string) $token, $timeout);
 
         return new self($connector, new TypeConverter, $config);
     }
