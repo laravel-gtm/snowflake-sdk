@@ -1,0 +1,7 @@
+POST https://laravel-rpb57418.snowflakecomputing.com/api/v2/statements
+Authorization: Bearer {{SNOWFLAKE_BEARER_TOKEN}}
+Content-Type: application/json
+Accept: application/json
+{
+    "statement": "select 1"
+}
