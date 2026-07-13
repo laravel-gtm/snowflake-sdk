@@ -3,5 +3,6 @@ Authorization: Bearer {{SNOWFLAKE_BEARER_TOKEN}}
 Content-Type: application/json
 Accept: application/json
 {
+    "role": "ANALYZER_ROLE",
     "statement": "select 1"
 }
