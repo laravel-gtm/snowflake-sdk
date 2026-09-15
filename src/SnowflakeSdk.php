@@ -64,7 +64,8 @@ class SnowflakeSdk
             'role' => $context['role'] ?? $this->config['role'] ?? null,
         ];
 
-        $timeout = (int) ($this->config['timeout'] ?? 0);
+        $timeout = max(0, (int) ($context['timeout'] ?? $this->config['timeout'] ?? 0));
+        $deadline = $timeout > 0 ? $this->currentTime() + $timeout : null;
 
         $request = new ExecuteStatementRequest($interpolatedSql, $mergedContext, $requestId, $timeout);
 
@@ -74,7 +75,7 @@ class SnowflakeSdk
             throw new SnowflakeException('Failed to connect to Snowflake: '.$e->getMessage(), 0, $e);
         }
 
-        return $this->handleResponse($response, $sql, $bindings);
+        return $this->handleResponse($response, $sql, $bindings, $timeout, $deadline);
     }
 
     /**
@@ -84,6 +85,8 @@ class SnowflakeSdk
         Response $response,
         string $sql,
         array $bindings,
+        int $timeout,
+        ?float $deadline,
     ): SnowflakeResult {
         /** @var array<string, mixed> $data */
         $data = $response->json() ?? [];
@@ -106,19 +109,35 @@ class SnowflakeSdk
         if ($response->status() === 202 || isset($data['statementStatusUrl'])) {
             $handle = (string) ($data['statementHandle'] ?? '');
 
-            return $this->pollForCompletion($handle, $sql, $bindings);
+            return $this->pollForCompletion($handle, $sql, $bindings, $timeout, $deadline);
         }
 
         return new SnowflakeResult($data, $this->createPartitionFetcher());
     }
 
-    private function pollForCompletion(string $statementHandle, string $sql, array $bindings): SnowflakeResult
-    {
-        $interval = (int) ($this->config['async_polling_interval'] ?? 500);
-        $maxAttempts = 7200;
+    /**
+     * @param  array<int, mixed>  $bindings
+     */
+    private function pollForCompletion(
+        string $statementHandle,
+        string $sql,
+        array $bindings,
+        int $timeout,
+        ?float $deadline,
+    ): SnowflakeResult {
+        $interval = max(0, (int) ($this->config['async_polling_interval'] ?? 500));
 
-        for ($attempt = 0; $attempt < $maxAttempts; $attempt++) {
-            usleep($interval * 1000);
+        while (true) {
+            $this->throwIfDeadlineExceeded($statementHandle, $timeout, $deadline);
+
+            $sleepMilliseconds = $interval;
+            if ($deadline !== null) {
+                $remainingMilliseconds = (int) ceil(($deadline - $this->currentTime()) * 1000);
+                $sleepMilliseconds = min($sleepMilliseconds, max(0, $remainingMilliseconds));
+            }
+
+            $this->sleep($sleepMilliseconds);
+            $this->throwIfDeadlineExceeded($statementHandle, $timeout, $deadline);
 
             $request = new GetStatementStatusRequest($statementHandle);
 
@@ -127,6 +146,8 @@ class SnowflakeSdk
             } catch (FatalRequestException $e) {
                 throw new SnowflakeException('Failed to poll Snowflake: '.$e->getMessage(), 0, $e);
             }
+
+            $this->throwIfDeadlineExceeded($statementHandle, $timeout, $deadline);
 
             /** @var array<string, mixed> $data */
             $data = $response->json() ?? [];
@@ -146,10 +167,19 @@ class SnowflakeSdk
                 return new SnowflakeResult($data, $this->createPartitionFetcher());
             }
         }
+    }
+
+    private function throwIfDeadlineExceeded(string $statementHandle, int $timeout, ?float $deadline): void
+    {
+        if ($deadline === null || $this->currentTime() < $deadline) {
+            return;
+        }
 
         $this->cancelStatement($statementHandle);
 
-        throw new SnowflakeException("Query timed out after polling for {$maxAttempts} attempts");
+        $unit = $timeout === 1 ? 'second' : 'seconds';
+
+        throw new SnowflakeException("Query timed out after {$timeout} {$unit}");
     }
 
     /**
@@ -222,6 +252,16 @@ class SnowflakeSdk
     private function createPartitionFetcher(): Closure
     {
         return fn (string $handle, int $partition): array => $this->fetchPartition($handle, $partition);
+    }
+
+    protected function currentTime(): float
+    {
+        return hrtime(true) / 1_000_000_000;
+    }
+
+    protected function sleep(int $milliseconds): void
+    {
+        usleep($milliseconds * 1000);
     }
 
     public function getConnector(): SnowflakeConnector
