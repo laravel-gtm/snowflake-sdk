@@ -95,6 +95,14 @@ final class SnowflakeResult
     }
 
     /**
+     * @return array<int, array<string, mixed>>
+     */
+    public function fetchAssoc(bool $lowercaseKeys = true): array
+    {
+        return $this->getResultSet()->toAssoc($lowercaseKeys);
+    }
+
+    /**
      * @return array{rowCount: int, partitionCount: int, statementHandle: string}
      */
     public function getStats(): array

@@ -91,6 +91,42 @@ $sdk = SnowflakeSdk::make([
 $result = $sdk->execute('SELECT * FROM my_table LIMIT 10');
 ```
 
+### Timeouts
+
+Set `SNOWFLAKE_TIMEOUT` to the maximum number of seconds a statement may run. The SDK sends this timeout to Snowflake and applies the same deadline while polling asynchronous statements. When the deadline is reached, the SDK requests cancellation and throws a `SnowflakeException`.
+
+Override the configured timeout for one call with the context argument:
+
+```php
+$result = $sdk->execute(
+    'SELECT * FROM large_table WHERE account_id = ?',
+    [$accountId],
+    ['timeout' => 15],
+);
+```
+
+A timeout of `0`, which is the default, disables the per-statement deadline.
+
+### Associative rows
+
+Use `fetchAssoc()` when array rows are more convenient than the objects returned by `fetchAll()`. Keys are lowercase by default because Snowflake uppercases unquoted identifiers:
+
+```php
+$rows = $result->fetchAssoc();
+
+echo $rows[0]['account_id'];
+```
+
+Pass `false` to preserve Snowflake's original column names, or stream associative rows from the result set:
+
+```php
+$rows = $result->fetchAssoc(lowercaseKeys: false);
+
+foreach ($result->getResultSet()->assocRows() as $row) {
+    // $row['account_id']
+}
+```
+
 ### Eloquent Models
 
 Add the `UsesSnowflake` trait to any model that connects to Snowflake:

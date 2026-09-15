@@ -8,6 +8,8 @@ return [
     'database' => env('SNOWFLAKE_DATABASE'),
     'schema' => env('SNOWFLAKE_SCHEMA', 'PUBLIC'),
     'role' => env('SNOWFLAKE_ROLE'),
+
+    // Maximum seconds per statement for Snowflake and async polling. Set to 0 for no deadline.
     'timeout' => (int) env('SNOWFLAKE_TIMEOUT', 0),
     'async_polling_interval' => (int) env('SNOWFLAKE_POLLING_INTERVAL', 500),
 

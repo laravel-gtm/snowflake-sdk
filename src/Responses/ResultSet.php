@@ -90,6 +90,35 @@ final class ResultSet implements IteratorAggregate
         return iterator_to_array($this->rows(), false);
     }
 
+    /**
+     * @return Generator<int, array<string, mixed>>
+     */
+    public function assocRows(bool $lowercaseKeys = true): Generator
+    {
+        $rowIndex = 0;
+
+        foreach ($this->initialData as $row) {
+            yield $rowIndex++ => $this->transformAssocRow($row, $lowercaseKeys);
+        }
+
+        for ($i = 1; $i < $this->getPartitionCount(); $i++) {
+            /** @var array<int, array<int, mixed>> $partitionData */
+            $partitionData = ($this->partitionFetcher)($this->statementHandle, $i);
+
+            foreach ($partitionData as $row) {
+                yield $rowIndex++ => $this->transformAssocRow($row, $lowercaseKeys);
+            }
+        }
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    public function toAssoc(bool $lowercaseKeys = true): array
+    {
+        return iterator_to_array($this->assocRows($lowercaseKeys), false);
+    }
+
     public function first(): ?object
     {
         foreach ($this->rows() as $row) {
@@ -112,6 +141,26 @@ final class ResultSet implements IteratorAggregate
             $rawValue = $row[$index] ?? null;
 
             $result->{$name} = $this->typeConverter->cast($rawValue, $type, $column);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param  array<int, mixed>  $row
+     * @return array<string, mixed>
+     */
+    private function transformAssocRow(array $row, bool $lowercaseKeys): array
+    {
+        $result = [];
+
+        foreach ($this->columnMeta as $index => $column) {
+            $name = (string) $column['name'];
+            $key = $lowercaseKeys ? strtolower($name) : $name;
+            $type = (string) $column['type'];
+            $rawValue = $row[$index] ?? null;
+
+            $result[$key] = $this->typeConverter->cast($rawValue, $type, $column);
         }
 
         return $result;
