@@ -277,14 +277,30 @@ final class TypeConverter
         }
 
         if ($value instanceof \DateTimeInterface) {
-            return "'".$value->format('Y-m-d H:i:s.u')."'";
+            return $this->quoteSnowflakeString($value->format('Y-m-d H:i:s.u'));
         }
 
         if (is_array($value) || is_object($value)) {
-            return "PARSE_JSON('".str_replace("'", "''", json_encode($value))."')";
+            $encoded = json_encode($value, JSON_THROW_ON_ERROR);
+
+            return 'PARSE_JSON('.$this->quoteSnowflakeString($encoded).')';
         }
 
-        // String - escape single quotes by doubling them
-        return "'".str_replace("'", "''", (string) $value)."'";
+        return $this->quoteSnowflakeString((string) $value);
+    }
+
+    /**
+     * Quote a value for a Snowflake single-quoted literal.
+     *
+     * Backslashes are escaped before quotes. Snowflake treats \' as a quote and
+     * \\ as a backslash, so doubling quotes alone lets a value such as
+     * %x\' OR 1=1 -- close the literal early.
+     */
+    private function quoteSnowflakeString(string $value): string
+    {
+        $escaped = str_replace('\\', '\\\\', $value);
+        $escaped = str_replace("'", "''", $escaped);
+
+        return "'".$escaped."'";
     }
 }

@@ -5,6 +5,66 @@ declare(strict_types=1);
 use Carbon\Carbon;
 use LaravelGtm\SnowflakeSdk\Support\TypeConverter;
 
+/**
+ * Decode a Snowflake single-quoted literal using doubled quotes and simple backslash escapes.
+ *
+ * Returns the string value only when the literal consumes the entire input. An early closing
+ * quote (the backslash-quote breakout) throws instead.
+ */
+function decodeSnowflakeSingleQuotedLiteral(string $literal): string
+{
+    if (! str_starts_with($literal, "'")) {
+        throw new InvalidArgumentException('Expected a single-quoted Snowflake literal.');
+    }
+
+    $decoded = '';
+    $length = strlen($literal);
+
+    for ($index = 1; $index < $length; $index++) {
+        $character = $literal[$index];
+
+        if ($character === '\\') {
+            if ($index + 1 >= $length) {
+                throw new RuntimeException('Backslash escapes the closing quote.');
+            }
+
+            $next = $literal[$index + 1];
+            $decoded .= match ($next) {
+                '\\', "'", '"' => $next,
+                'b' => "\u{0008}",
+                'f' => "\f",
+                'n' => "\n",
+                'r' => "\r",
+                't' => "\t",
+                '0' => "\0",
+                default => $next,
+            };
+            $index++;
+
+            continue;
+        }
+
+        if ($character === "'") {
+            if ($index + 1 < $length && $literal[$index + 1] === "'") {
+                $decoded .= "'";
+                $index++;
+
+                continue;
+            }
+
+            if ($index !== $length - 1) {
+                throw new RuntimeException('Quote breakout; trailing SQL: '.substr($literal, $index + 1));
+            }
+
+            return $decoded;
+        }
+
+        $decoded .= $character;
+    }
+
+    throw new RuntimeException('Unterminated string literal.');
+}
+
 beforeEach(function () {
     $this->converter = new TypeConverter;
 });
@@ -163,6 +223,40 @@ describe('sql literal conversion', function () {
     it('converts strings with escaping', function () {
         expect($this->converter->toSqlLiteral('hello'))->toBe("'hello'");
         expect($this->converter->toSqlLiteral("it's"))->toBe("'it''s'");
+    });
+
+    it('does not let a backslash-quote break out of a string literal', function () {
+        $payload = "%x\\' OR 1=1 --";
+
+        $literal = $this->converter->toSqlLiteral($payload);
+
+        // Snowflake treats \' as an escaped quote. Doubling ' alone emits
+        // '%x\'' OR 1=1 --', which closes the literal and leaves SQL behind.
+        expect($literal)->toBe("'%x\\\\'' OR 1=1 --'")
+            ->and(decodeSnowflakeSingleQuotedLiteral($literal))->toBe($payload);
+    });
+
+    it('keeps backslashes inside the literal instead of as Snowflake escapes', function (string $payload) {
+        $literal = $this->converter->toSqlLiteral($payload);
+
+        expect(decodeSnowflakeSingleQuotedLiteral($literal))->toBe($payload);
+    })->with([
+        'trailing backslash' => ['C:\\'],
+        'backslash-n' => ['a\\nb'],
+        'hex quote escape' => ['\\x27'],
+        'quote and backslash' => ["it\\'s"],
+    ]);
+
+    it('keeps backslash-quote inside PARSE_JSON string literals', function () {
+        $payload = "%x\\' OR 1=1 --";
+        $literal = $this->converter->toSqlLiteral(['q' => $payload]);
+
+        expect($literal)->toStartWith('PARSE_JSON(')
+            ->toEndWith(')');
+
+        $inner = substr($literal, strlen('PARSE_JSON('), -1);
+
+        expect(decodeSnowflakeSingleQuotedLiteral($inner))->toBe(json_encode(['q' => $payload]));
     });
 
     it('converts datetime', function () {

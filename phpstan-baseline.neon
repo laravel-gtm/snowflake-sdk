@@ -343,12 +343,6 @@ parameters:
 			path: src/Support/TypeConverter.php
 
 		-
-			message: '#^Parameter \#3 \$subject of function str_replace expects array\<string\>\|string, string\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Support/TypeConverter.php
-
-		-
 			message: '#^Parameter \#1 \$string of function strlen expects string, string\|null given\.$#'
 			identifier: argument.type
 			count: 1
@@ -409,18 +403,6 @@ parameters:
 			path: tests/Feature/MigrationTest.php
 
 		-
-			message: '#^Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\HigherOrderMessage\:\:andReturn\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: tests/Feature/MigrationTest.php
-
-		-
-			message: '#^Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\HigherOrderMessage\:\:andReturnUsing\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: tests/Feature/MigrationTest.php
-
-		-
 			message: '#^Cannot access property \$columns on Illuminate\\Support\\Fluent\|null\.$#'
 			identifier: property.nonObject
 			count: 1
@@ -463,12 +445,6 @@ parameters:
 			path: tests/Feature/QueryBuilderTest.php
 
 		-
-			message: '#^Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\HigherOrderMessage\:\:andReturn\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: tests/Feature/QueryBuilderTest.php
-
-		-
 			message: '#^Parameter \#1 \$connection of class Illuminate\\Database\\Query\\Builder constructor expects Illuminate\\Database\\ConnectionInterface, Mockery\\MockInterface given\.$#'
 			identifier: argument.type
 			count: 1
@@ -481,7 +457,7 @@ parameters:
 			path: tests/Feature/QueryBuilderTest.php
 
 		-
-			message: '#^Access to an undefined property Pest\\Mixins\\Expectation\<null\>\:\:\$not\.$#'
+			message: '#^Access to an undefined property Pest\\Mixins\\Expectation\<mixed\>\:\:\$not\.$#'
 			identifier: property.notFound
 			count: 1
 			path: tests/Pest.php
@@ -607,12 +583,6 @@ parameters:
 			path: tests/Unit/Query/GrammarTest.php
 
 		-
-			message: '#^Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\HigherOrderMessage\:\:andReturn\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: tests/Unit/Query/GrammarTest.php
-
-		-
 			message: '#^Parameter \#1 \$connection of class LaravelGtm\\SnowflakeSdk\\Query\\Grammars\\SnowflakeGrammar constructor expects Illuminate\\Database\\Connection, Mockery\\MockInterface given\.$#'
 			identifier: argument.type
 			count: 1
@@ -631,18 +601,6 @@ parameters:
 			path: tests/Unit/Schema/GrammarTest.php
 
 		-
-			message: '#^Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\HigherOrderMessage\:\:andReturn\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: tests/Unit/Schema/GrammarTest.php
-
-		-
-			message: '#^Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\HigherOrderMessage\:\:andReturnUsing\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: tests/Unit/Schema/GrammarTest.php
-
-		-
 			message: '#^Parameter \#1 \$connection of class LaravelGtm\\SnowflakeSdk\\Schema\\Grammars\\SnowflakeSchemaGrammar constructor expects Illuminate\\Database\\Connection, Mockery\\MockInterface given\.$#'
 			identifier: argument.type
 			count: 1
@@ -657,18 +615,18 @@ parameters:
 		-
 			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$connector\.$#'
 			identifier: property.notFound
-			count: 5
+			count: 6
 			path: tests/Unit/SnowflakeSdkTest.php
 
 		-
 			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$sdk\.$#'
 			identifier: property.notFound
-			count: 5
+			count: 6
 			path: tests/Unit/SnowflakeSdkTest.php
 
 
 		-
 			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$converter\.$#'
 			identifier: property.notFound
-			count: 39
+			count: 42
 			path: tests/Unit/Support/TypeConverterTest.php
