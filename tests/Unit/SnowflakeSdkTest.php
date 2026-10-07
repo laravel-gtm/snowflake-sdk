@@ -65,6 +65,30 @@ describe('SnowflakeSdk', function () {
         $mockClient->assertSent(ExecuteStatementRequest::class);
     });
 
+    it('interpolates backslash-quote bindings without closing the string literal', function () {
+        $mockClient = new MockClient([
+            ExecuteStatementRequest::class => MockResponse::make([
+                'statementHandle' => 'handle-escape',
+                'resultSetMetaData' => [
+                    'numRows' => 0,
+                    'rowType' => [],
+                    'partitionInfo' => [],
+                ],
+                'data' => [],
+            ], 200),
+        ]);
+
+        $this->connector->withMockClient($mockClient);
+
+        $payload = "%x\\' OR 1=1 --";
+        $this->sdk->execute('SELECT * FROM t WHERE name LIKE ?', [$payload]);
+
+        $response = $mockClient->findResponseByRequest(ExecuteStatementRequest::class);
+        $body = $response?->getPendingRequest()->body()?->all();
+
+        expect($body['statement'] ?? null)->toBe("SELECT * FROM t WHERE name LIKE '%x\\\\'' OR 1=1 --'");
+    });
+
     it('uses a per-call timeout override for the statement request and polling deadline', function () {
         $connector = new SnowflakeConnector(
             account: 'test-account',
