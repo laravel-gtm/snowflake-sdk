@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# Prepares a fresh Amp orb: PHP 8.4, Composer, and the package's Composer dependencies.
+set -euo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
+
+step() {
+  local label="$1"
+  shift
+  local start=$SECONDS
+  echo "==> ${label}"
+  "$@"
+  echo "    ${label} took $((SECONDS - start))s"
+}
+
+# Matches the CI matrix (PHP 8.4) and its extensions; bcmath is used by TypeConverter.
+packages=(php8.4-cli php8.4-bcmath php8.4-curl php8.4-mbstring php8.4-xml php8.4-zip unzip composer)
+
+install_packages() {
+  local missing=()
+  for pkg in "${packages[@]}"; do
+    dpkg-query -W -f='${Status}' "$pkg" 2>/dev/null | grep -q 'install ok installed' || missing+=("$pkg")
+  done
+  if ((${#missing[@]} == 0)); then
+    echo "    system packages already installed"
+    return
+  fi
+  sudo apt-get update -qq
+  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends "${missing[@]}"
+}
+
+# composer.lock is gitignored, so resolve only when it is missing or out of date with composer.json.
+install_dependencies() {
+  if [[ -f composer.lock ]] && composer validate --no-check-all --no-check-publish --check-lock -q >/dev/null 2>&1; then
+    composer install --no-interaction --no-progress --prefer-dist
+  else
+    composer update --no-interaction --no-progress --prefer-dist
+  fi
+}
+
+step "System packages" install_packages
+step "Composer dependencies" install_dependencies
+
+php -v | head -1
+composer --version

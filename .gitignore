@@ -24,3 +24,6 @@ coverage/
 .env
 .env.*
 !.env.example
+
+# Amp
+.amp/portals/*
