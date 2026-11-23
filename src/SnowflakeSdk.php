@@ -106,7 +106,7 @@ class SnowflakeSdk
             );
         }
 
-        if ($response->status() === 202 || isset($data['statementStatusUrl'])) {
+        if ($response->status() === 202) {
             $handle = (string) ($data['statementHandle'] ?? '');
 
             return $this->pollForCompletion($handle, $sql, $bindings, $timeout, $deadline);

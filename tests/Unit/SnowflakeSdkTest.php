@@ -65,6 +65,47 @@ describe('SnowflakeSdk', function () {
         $mockClient->assertSent(ExecuteStatementRequest::class);
     });
 
+    it('returns a finished 200 result without polling even when it includes statementStatusUrl', function () {
+        $connector = new SnowflakeConnector(
+            account: 'test-account',
+            token: 'test-bearer-token',
+        );
+        $sdk = new class(connector: $connector, typeConverter: new TypeConverter) extends SnowflakeSdk
+        {
+            public int $sleepCalls = 0;
+
+            protected function sleep(int $milliseconds): void
+            {
+                $this->sleepCalls++;
+            }
+        };
+
+        $mockClient = new MockClient([
+            MockResponse::make([
+                'code' => '090001',
+                'message' => 'Statement executed successfully.',
+                'statementHandle' => 'handle-finished',
+                'statementStatusUrl' => '/api/v2/statements/handle-finished',
+                'resultSetMetaData' => [
+                    'numRows' => 1,
+                    'rowType' => [['name' => 'ID', 'type' => 'FIXED', 'scale' => 0]],
+                    'partitionInfo' => [],
+                ],
+                'data' => [['1']],
+            ], 200),
+            MockResponse::make(['data' => [['2']]], 200),
+        ]);
+
+        $connector->withMockClient($mockClient);
+
+        $result = $sdk->execute('SELECT 1');
+
+        expect($result->fetchAll())->toEqual([(object) ['ID' => 1]]);
+        expect($sdk->sleepCalls)->toBe(0);
+        $mockClient->assertSentCount(1);
+        $mockClient->assertNotSent(GetStatementStatusRequest::class);
+    });
+
     it('interpolates backslash-quote bindings without closing the string literal', function () {
         $mockClient = new MockClient([
             ExecuteStatementRequest::class => MockResponse::make([
